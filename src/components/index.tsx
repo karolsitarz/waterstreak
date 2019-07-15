@@ -25,15 +25,9 @@ export default class Hello extends React.Component<{}> {
             <h1>Hello, there!</h1>
             <h2>You're doing great!</h2>
           </div>
-
-          <Progress date={today()} border={0.075}>
-            :DDDDDD
-          </Progress>
+          <Progress date={today()} />
           <Input />
         </Section>
-        {/* <Section>
-          czeesc:DD
-        </Section> */}
       </>
     );
   }

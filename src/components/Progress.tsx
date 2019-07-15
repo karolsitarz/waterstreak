@@ -10,13 +10,16 @@ type Props = {
 const RingContainer = styled.div<Props>`
   --b: ${props => props.border ? `${props.border * 100}%` : '10%'};
   --p: ${props => props.progress};
-  max-width: 70vmin;
-  max-height: 70vmin;
+  max-width: 65vmin;
+  max-height: 65vmin;
   min-width: 50px;
   min-height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 2em 0;
+  width: 100%;
+  height: 100%;
 `;
 
 const Ring = styled.svg`
