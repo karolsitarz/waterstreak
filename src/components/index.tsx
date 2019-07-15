@@ -24,13 +24,13 @@ export default class Hello extends React.Component<{}> {
             <h2>You're doing great!</h2>
           </div>
           <Progress progress={0.65} border={0.075}>
-            :DDDDDD
+            {/* :DDDDDD */}
           </Progress>
           <Input />
         </Section>
-        <Section>
+        {/* <Section>
           czeesc:DD
-        </Section>
+        </Section> */}
       </>
     );
   }

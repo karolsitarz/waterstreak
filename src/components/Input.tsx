@@ -1,6 +1,32 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { FTScroller as Scroller } from 'ftscroller';
+import { Swiper } from 'swiper/dist/js/swiper.esm.js';
+// import console = require('console');
+
+type SwiperValues = {
+  desc: string
+  value: number
+}
+
+const mlValues: SwiperValues[] = [
+  { desc: '125 ml', value: 125 },
+ { desc: '250 ml', value: 250 },
+ { desc: '300 ml', value: 300 },
+ { desc: '350 ml', value: 350 },
+ { desc: '400 ml', value: 400 },
+ { desc: '450 ml', value: 450 },
+ { desc: '500 ml', value: 500 }]
+
+const timeValues: SwiperValues[] = [
+  { desc: 'now', value: 0 },
+ { desc: '15m ago', value: 15 },
+ { desc: '30m ago', value: 30 },
+ { desc: '1h ago', value: 60 },
+ { desc: '2h ago', value: 120 },
+ { desc: '3h ago', value: 180 },
+ { desc: '4h ago', value: 240 },
+ { desc: '5h ago', value: 300 },
+ { desc: '6h ago', value: 360 }]
 
 const InputContainer = styled.div`
   display: flex;
@@ -15,8 +41,10 @@ const SlidersContainer = styled.div`
   border-radius: 1em;
   height: 3em;
   margin-bottom: .5em;
-  width: 10em;
+  min-width: 8em;
   max-width: 100%;
+  overflow-y: hidden;
+  display: flex;
 `;
 
 const DrinkButton = styled.div`
@@ -24,6 +52,7 @@ const DrinkButton = styled.div`
   border-radius: 1em;
   padding: .75em 2em;
   color: #fff;
+  box-shadow: 0 0.5em 1em 0 rgba(0, 0, 0, 0.2);
 `;
 
 const ScrollElement = styled.div`
@@ -34,38 +63,63 @@ const ScrollElement = styled.div`
   align-items: center;
 `;
 
+const ScrollContainer = styled.div`
+  flex-grow: 1;
+`;
+
 export default class Input extends Component {
-  scroller: HTMLDivElement;
-  scrollerItem: HTMLDivElement;
+  mlScrollEl: HTMLDivElement;
+  timeScrollEl: HTMLDivElement;
+  mlSwiper: Swiper;
+  timeSwiper: Swiper;
 
   componentDidMount () {
-    console.log(this.scrollerItem.getBoundingClientRect().height);
-    new Scroller(this.scroller, {
-      scrollingX: false,
-      snapping: true,
-      scrollbars: false,
-      snapSizeY: this.scrollerItem.getBoundingClientRect().height
+    this.mlSwiper = new Swiper(this.mlScrollEl, {
+      direction: 'vertical',
+      slidesPerView: 2,
+      centeredSlides: true,
+      initialSlide: 1
+    });
+    this.timeSwiper = new Swiper(this.timeScrollEl, {
+      direction: 'vertical',
+      slidesPerView: 2,
+      centeredSlides: true
     });
   }
   render() {
     return (
       <InputContainer>
-        <SlidersContainer
-          ref={((e: HTMLDivElement) => this.scroller = e)}>
-          <div className="ftscroller_container">
-            <div className="ftscroller_y ftscroller_hwaccelerated">
-              <ScrollElement
-                ref={((e: HTMLDivElement) => this.scrollerItem = e)}>
-                125ml</ScrollElement>
-              <ScrollElement>250ml</ScrollElement>
-              <ScrollElement>300ml</ScrollElement>
-              <ScrollElement>400ml</ScrollElement>
-              <ScrollElement>500ml</ScrollElement>
+        <SlidersContainer>
+          <ScrollContainer
+            style={{margin: '0 1em 0 2em'}}
+            ref={((e: HTMLDivElement) => this.mlScrollEl = e)}>
+            <div className="swiper-wrapper">
+              {mlValues.map(c =>
+                <ScrollElement
+                  key={c.value}
+                  className="swiper-slide">
+                    {c.desc}
+                  </ScrollElement>)}
             </div>
-          </div>
+          </ScrollContainer>
+          <ScrollContainer
+            style={{margin: '0 2em 0 1em'}}
+            ref={((e: HTMLDivElement) => this.timeScrollEl = e)}>
+            <div className="swiper-wrapper">
+              {timeValues.map(c => 
+                <ScrollElement
+                  key={c.value}
+                  className="swiper-slide">
+                    {c.desc}
+                  </ScrollElement>)}
+            </div>
+          </ScrollContainer>
         </SlidersContainer>
-        <DrinkButton>drink</DrinkButton>
+        <DrinkButton onClick={e => this.handleButtonClick()}>drink</DrinkButton>
       </InputContainer>
     );
+  }
+  handleButtonClick () {
+    console.log(mlValues[this.mlSwiper.activeIndex], timeValues[this.timeSwiper.activeIndex]);
   }
 }

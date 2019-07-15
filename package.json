@@ -34,11 +34,12 @@
   },
   "dependencies": {
     "@types/styled-components": "^4.1.18",
-    "ftscroller": "^0.7.0",
+    "@types/swiper": "^4.4.3",
     "idb": "^4.0.4",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "styled-components": "^4.3.2"
+    "styled-components": "^4.3.2",
+    "swiper": "^4.5.0"
   },
   "browserslist": {
     "development": [
