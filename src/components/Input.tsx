@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Swiper } from 'swiper/dist/js/swiper.esm.js';
-// import console = require('console');
+
+import { addToDB } from '../util/db';
+import { dispatchProgressEvent } from '../util/progressEvent';
+import { subtractTime } from '../util/time';
 
 type SwiperValues = {
   desc: string
@@ -119,7 +122,10 @@ export default class Input extends Component {
       </InputContainer>
     );
   }
-  handleButtonClick () {
-    console.log(mlValues[this.mlSwiper.activeIndex], timeValues[this.timeSwiper.activeIndex]);
+  async handleButtonClick () {
+    const mlValue = mlValues[this.mlSwiper.activeIndex].value;
+    const timeValue = subtractTime(new Date(), timeValues[this.timeSwiper.activeIndex].value * 60000);
+    await addToDB(mlValue, timeValue);
+    dispatchProgressEvent(timeValue);
   }
 }

@@ -1,15 +1,11 @@
 import { openDB, DBSchema } from 'idb';
+import { startDay, endDay, ObjectDate, today, objectToDate } from './time';
  
 interface MyDB extends DBSchema {
   'waterstreak_data': {
     key: number
     value: number
   }
-}
-
-const midnight = (date: Date = new Date()): Date => {
-  date.setHours(0, 0, 0, 0);
-  return date;
 }
 
 const open = async () => 
@@ -19,12 +15,18 @@ const open = async () =>
     }
   });
 
-export const add = async (volume: number) => {
+export const addToDB = async (volume: number, date: Date = new Date()) => {
   const db = await open();
   await db.put('waterstreak_data', volume, new Date().getTime());
 };
 
-export const getKeysBetween = async (startTime: Date = midnight(), endTime: Date = new Date()) => {
+export const getByKey = async (key: number) => {
+  const db = await open();
+  return await
+    db.get('waterstreak_data', key);
+};
+
+const getKeysBetween = async (startTime: Date, endTime: Date) => {
   const db = await open();
   return await 
     db.getAllKeys(
@@ -32,9 +34,9 @@ export const getKeysBetween = async (startTime: Date = midnight(), endTime: Date
       IDBKeyRange.bound(
         startTime.getTime(),
         endTime.getTime()));
-}
+};
 
-export const getBetween = async (startTime: Date = midnight(), endTime: Date = new Date()) => {
+const getValuesBetween = async (startTime: Date, endTime: Date) => {
   const db = await open();
   return await 
     db.getAll(
@@ -42,10 +44,14 @@ export const getBetween = async (startTime: Date = midnight(), endTime: Date = n
       IDBKeyRange.bound(
         startTime.getTime(),
         endTime.getTime()));
-}
+};
 
-export const getByKey = async (key: number) => {
-  const db = await open();
-  return await
-    db.get('waterstreak_data', key);
-}
+export const getKeysDay = async (date: ObjectDate = today()) => {
+  const tempDate = objectToDate(date);
+  return getKeysBetween(startDay(tempDate), endDay(tempDate));
+};
+
+export const getValuesDay = async (date: ObjectDate = today()) => {
+  const tempDate = objectToDate(date);
+  return getValuesBetween(startDay(tempDate), endDay(tempDate));
+};

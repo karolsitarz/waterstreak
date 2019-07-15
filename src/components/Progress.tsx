@@ -4,7 +4,6 @@ import styled, { keyframes } from 'styled-components';
 type Props = {
   progress: number
   border?: number
-  style?: object
 }
 
 
@@ -15,7 +14,9 @@ const RingContainer = styled.div<Props>`
   max-height: 70vmin;
   min-width: 50px;
   min-height: 50px;
-  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Ring = styled.svg`
@@ -23,14 +24,7 @@ const Ring = styled.svg`
   height: 100%;
 `;
 
-const PercentageRise = keyframes`
-  from {
-    stroke-dashoffset: var(--circ);
-  }
-`;
-
 const Percentage = styled.circle`
-  animation: ${PercentageRise} 2s 1s ease backwards;
   fill: transparent;
   stroke: var(--accent);
   stroke-width: var(--b);
@@ -42,6 +36,7 @@ const Percentage = styled.circle`
   stroke-dashoffset: calc(var(--circ) - var(--p) * var(--circ));
   transform: rotate(-90deg);
   transform-origin: 50% 50%;
+  transition: stroke-dashoffset 2s ease;
 `;
 
 const RingBackground = styled.circle`
@@ -66,33 +61,6 @@ const Content = styled.div`
   position: absolute;
 `;
 
-const PercentageRiseCap = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-`;
-const Cap = styled.div`
-  animation: ${PercentageRiseCap} 2s 1s ease backwards;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  left: 0;
-  top: 0;
-  transform: rotate(calc(var(--p) * 360deg));
-  &::before {
-    content: "";
-    background: var(--accent);
-    width: var(--b);
-    height: var(--b);
-    display: block;
-    border-radius: 0 50% 50% 0;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    /* box-shadow: 0.5em 0 0.5em 0 rgba(0, 0, 0, .1); */
-  }
-`;
-
 export default class ProgressRing extends Component<Props, {}> {
   render() {
     return (
@@ -105,7 +73,6 @@ export default class ProgressRing extends Component<Props, {}> {
           <RingBackground />
           <Percentage />
         </Ring>
-        <Cap />
         <Content>
           {this.props.children}
         </Content>

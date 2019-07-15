@@ -1,8 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Progress from './Progress';
 import Input from './Input';
+import Progress from './HydroProgress';
+import { today } from '../util/time';
+// import console = require('console');
 
 const Section = styled.div`
   min-height: 100vh;
@@ -10,7 +12,7 @@ const Section = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
 `;
 
@@ -23,8 +25,9 @@ export default class Hello extends React.Component<{}> {
             <h1>Hello, there!</h1>
             <h2>You're doing great!</h2>
           </div>
-          <Progress progress={0.65} border={0.075}>
-            {/* :DDDDDD */}
+
+          <Progress date={today()} border={0.075}>
+            :DDDDDD
           </Progress>
           <Input />
         </Section>
