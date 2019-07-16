@@ -9,17 +9,17 @@ type Props = {
 
 const RingContainer = styled.div<Props>`
   --b: ${props => props.border ? `${props.border * 100}%` : '10%'};
-  --p: ${props => props.progress};
+  --p: ${props => props.progress > 1 ? 1 : (props.progress < 0 ? 0 : props.progress)};
   max-width: 65vmin;
   max-height: 65vmin;
+  width: 15em;
+  height: 15em;
   min-width: 50px;
   min-height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 2em 0;
-  width: 100%;
-  height: 100%;
 `;
 
 const Ring = styled.svg`
