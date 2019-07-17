@@ -52,6 +52,7 @@ const SlidersContainer = styled.div`
 
 const DrinkButton = styled.div`
   background-color: var(--accent);
+  background-image: var(--gradient);
   border-radius: .75em;
   padding: .75em 2em;
   color: #fff;

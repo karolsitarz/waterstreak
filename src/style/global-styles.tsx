@@ -71,6 +71,7 @@ export default createGlobalStyle`
     --secondary: #777;
     --light: #e5e5e5;
     --bg: #fff;
+    --gradient: linear-gradient(to bottom right, #00cffc, #008ffc);
     font-size: 20px;
     letter-spacing: -.05em;
   }
