@@ -53,6 +53,7 @@ export default class ProgressRing extends Component<Props, State> {
     progress: this.props.progress,
     previousProgress: 0
   };
+  gradient: CanvasGradient;
 
   static getDerivedStateFromProps(props: Props, state: State) {
     if (props.progress === state.progress) return null;
@@ -69,7 +70,12 @@ export default class ProgressRing extends Component<Props, State> {
   componentDidMount() {
     this.state.progress = this.props.progress;
     this.drawRing();
-    this.canvas.getContext('2d').lineCap = 'round';
+
+    const ctx = this.canvas.getContext('2d');
+    ctx.lineCap = 'round';
+    this.gradient = ctx.createLinearGradient(0, 0, 0, size);
+    this.gradient.addColorStop(0, '#00cffc');
+    this.gradient.addColorStop(1, '#008ffc');
   }
 
   drawRing() {
@@ -81,12 +87,13 @@ export default class ProgressRing extends Component<Props, State> {
     ctx.beginPath();
     ctx.arc(size / 2, size / 2, size * (1 - stroke) / 2, 0, 2 * Math.PI);
     ctx.stroke();
-    ctx.strokeStyle = '#008ffc';
+    // ctx.strokeStyle = '#008ffc';
   }
 
   drawPercentage(p: number) {
     const ctx = this.canvas.getContext('2d');
 
+    ctx.strokeStyle = this.gradient;
     ctx.beginPath();
     ctx.arc(size / 2, size / 2, size * (1 - stroke) / 2, -Math.PI / 2, Math.PI * p * 2 - Math.PI / 2);
     ctx.stroke();
