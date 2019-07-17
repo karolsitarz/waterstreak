@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Progress from './Progress';
 import { ObjectDate } from '../util/time';
 import { getValuesDay } from '../util/db';
-import { addProgressListener } from '../util/progressEvent';
+import { addProgressListener, removeProgressListener } from '../util/progressEvent';
 
 const GOAL = 2000;
 
@@ -22,6 +22,9 @@ export default class HydroProgress extends Component<Props, State> {
   componentDidMount() {
     addProgressListener(this, this.props.date);
     this.updateValue();
+  }
+  componentWillUnmount() {
+    removeProgressListener(this, this.props.date);
   }
   async updateValue () {
     const values = await getValuesDay(this.props.date);

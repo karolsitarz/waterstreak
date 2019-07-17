@@ -29,9 +29,9 @@ export default class Hello extends React.Component<{}> {
           <Progress date={today()} />
           <Input />
         </Section>
-        {/* <Section>
+        <Section>
           <Calendar />
-        </Section> */}
+        </Section>
       </>
     );
   }

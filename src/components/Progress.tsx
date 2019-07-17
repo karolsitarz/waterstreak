@@ -5,7 +5,7 @@ import BezierEasing from 'bezier-easing';
 const size = 400;
 const time = 250;
 const stroke = 0.1;
-const ease = BezierEasing(0.43, 0, 0.2, 1);
+const ease = BezierEasing(0.43, 0, 0.43, 1);
 
 type Props = {
   progress: number
@@ -62,15 +62,17 @@ export default class ProgressRing extends Component<Props, State> {
     }
   }
   componentDidUpdate() {
-    this.animate(this.state.previousProgress, this.state.progress);
+    if (this.state.previousProgress - this.state.progress !== 0)
+      this.animate(this.state.previousProgress, this.state.progress);
   }
 
   componentDidMount() {
     this.state.progress = this.props.progress;
     this.drawRing();
+    this.canvas.getContext('2d').lineCap = 'round';
   }
 
-  drawRing () {
+  drawRing() {
     const ctx = this.canvas.getContext('2d');
 
     ctx.clearRect(0, 0, size, size);
@@ -79,10 +81,10 @@ export default class ProgressRing extends Component<Props, State> {
     ctx.beginPath();
     ctx.arc(size / 2, size / 2, size * (1 - stroke) / 2, 0, 2 * Math.PI);
     ctx.stroke();
-    ctx.strokeStyle = '#000';
+    ctx.strokeStyle = '#008ffc';
   }
 
-  drawPercentage (p: number) {
+  drawPercentage(p: number) {
     const ctx = this.canvas.getContext('2d');
 
     ctx.beginPath();
@@ -90,25 +92,20 @@ export default class ProgressRing extends Component<Props, State> {
     ctx.stroke();
   }
 
-  animate (start: number, end: number) {
+  animate(start: number, end: number) {
+    start = start < 0 ? 0 : start;
+    end = end > 1 ? 1 : end;
     const chunkTime = Math.abs(time * (end - start));
     let t = 0;
-    const loopGrow = () => {
-      t++;
-      if (t > chunkTime) return;
+    const loop = () => {
+      if (this.canvas == null) return;
+      if (t++ > chunkTime) return;
   
+      if (start > end) this.drawRing();
       this.drawPercentage(ease(t / chunkTime) * (end - start) + start);
-      requestAnimationFrame(loopGrow);
+      requestAnimationFrame(loop);
     }
-    const loopShrink = () => {
-      t++;
-      if (t > chunkTime) return;
-
-      this.drawRing();
-      this.drawPercentage(ease(t / chunkTime) * (end - start) + start);
-      requestAnimationFrame(loopShrink);
-    }
-    start < end ? loopGrow() : loopShrink();
+    loop();
   }
 
   render() {
