@@ -44,7 +44,6 @@ export default class HydroProgress extends Component<Props, State> {
   render() {
     return this.props.main ? (
       <Progress
-        main={true}
         progress={this.state.progress / GOAL}>
         {this.state.progress > GOAL
           ? <H4>Goal reached!</H4>
