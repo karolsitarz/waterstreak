@@ -4,7 +4,7 @@ import BezierEasing from 'bezier-easing';
 
 const size = 400;
 const time = 250;
-const stroke = 0.1;
+const stroke = 0.075;
 const ease = BezierEasing(0.43, 0, 0.43, 1);
 
 type Props = {
@@ -22,8 +22,8 @@ const RingContainer = styled.div<{ main?: boolean }>`
   height: 100%;
   min-width: 10px;
   min-height: 10px;
-  max-width: 12em;
-  max-height: 12em;
+  max-width: 13em;
+  max-height: 13em;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -38,8 +38,8 @@ const Content = styled.div<{ main?: boolean }>`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 80%;
-  height: 80%;
+  width: 85%;
+  height: 85%;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
+
 import Progress from './Progress';
 import { ObjectDate } from '../util/time';
 import { getValuesDay } from '../util/db';
@@ -15,6 +17,13 @@ type Props = {
 type State = {
   progress: number
 }
+
+const H1 = styled.h1`
+  line-height: 0.7em;
+`;
+const H4 = styled.h4`
+  line-height: 1em;
+`;
 
 export default class HydroProgress extends Component<Props, State> {
   state: Readonly<State> = {
@@ -33,9 +42,20 @@ export default class HydroProgress extends Component<Props, State> {
     this.setState({ progress });
   }
   render() {
-    return (
+    return this.props.main ? (
       <Progress
-        main={this.props.main}
+        main={true}
+        progress={this.state.progress / GOAL}>
+        {this.state.progress > GOAL
+          ? <H4>Goal reached!</H4>
+          : <>
+            <H1>{GOAL - this.state.progress}</H1>
+            <H4>ml to go</H4>
+          </>}
+        <h6>out of {GOAL}</h6>
+      </Progress>
+    ) : (
+      <Progress
         progress={this.state.progress / GOAL}>
         {this.props.children}
       </Progress>

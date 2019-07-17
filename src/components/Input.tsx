@@ -41,7 +41,7 @@ const InputContainer = styled.div`
 
 const SlidersContainer = styled.div`
   background-color: var(--light);
-  border-radius: 1em;
+  border-radius: .75em;
   height: 3em;
   margin-bottom: .5em;
   min-width: 8em;
@@ -52,7 +52,7 @@ const SlidersContainer = styled.div`
 
 const DrinkButton = styled.div`
   background-color: var(--accent);
-  border-radius: 1em;
+  border-radius: .75em;
   padding: .75em 2em;
   color: #fff;
   box-shadow: 0 0.5em 1em 0 rgba(0, 0, 0, 0.2);
