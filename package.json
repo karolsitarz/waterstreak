@@ -35,6 +35,7 @@
   "dependencies": {
     "@types/styled-components": "^4.1.18",
     "@types/swiper": "^4.4.3",
+    "bezier-easing": "^2.1.0",
     "idb": "^4.0.4",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",

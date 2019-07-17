@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import Input from './Input';
 import Progress from './HydroProgress';
+// import Progress from './Progress';
 import { today } from '../util/time';
 import Calendar from './Calendar';
 
@@ -25,12 +26,12 @@ export default class Hello extends React.Component<{}> {
             <h1>Hello, there!</h1>
             <h2>You're doing great!</h2>
           </div>
-          <Progress date={today()} border={0.075} />
+          <Progress date={today()} />
           <Input />
         </Section>
-        <Section>
+        {/* <Section>
           <Calendar />
-        </Section>
+        </Section> */}
       </>
     );
   }

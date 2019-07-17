@@ -31,8 +31,7 @@ export default class HydroProgress extends Component<Props, State> {
   render() {
     return (
       <Progress
-        progress={this.state.progress / GOAL}
-        border={this.props.border}>
+        progress={this.state.progress / GOAL}>
         {this.props.children}
       </Progress>
     );
