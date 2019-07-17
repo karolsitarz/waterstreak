@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 
 type Props = {
   progress: number
@@ -12,14 +12,13 @@ const RingContainer = styled.div<Props>`
   --p: ${props => props.progress > 1 ? 1 : (props.progress < 0 ? 0 : props.progress)};
   max-width: 65vmin;
   max-height: 65vmin;
-  width: 15em;
-  height: 15em;
-  min-width: 50px;
-  min-height: 50px;
+  width: 100%;
+  height: 100%;
+  min-width: 10px;
+  min-height: 10px;
   display: flex;
   justify-content: center;
-  align-items: center;
-  margin: 2em 0;
+  align-items: center;  
 `;
 
 const Ring = styled.svg`

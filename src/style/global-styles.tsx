@@ -44,6 +44,7 @@ export default createGlobalStyle`
     height: 100%;
     margin: auto;
     text-align: center;
+    max-width: 960px;
   }
   svg {
     width: 100%;

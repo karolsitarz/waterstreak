@@ -36,4 +36,32 @@ export const objectDateToString = (object: ObjectDate): string => `${object.y}-$
 
 export const dateToString = (date: Date): string => `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 
-export const subtractTime = (date: Date, ms: number) => new Date(date.getTime() - ms);
+export const subtractTime = (date: Date, ms: number): Date => new Date(date.getTime() - ms);
+
+export const getFirstDay = (y: number, m: number): number => new Date(`${y}-${m}-01`).getDay();
+
+export const getDaysInMonth = (y: number, m: number): number => new Date(y, m, 0).getDate();
+
+export const nextMonth = (date: ObjectDate): ObjectDate => {
+  if (date.m >= 12) return {
+    d: date.d,
+    m: 1,
+    y: date.y * 1 + 1
+  }
+  return {
+    ...date,
+    m: date.m * 1 + 1
+  }
+}
+
+export const prevMonth = (date: ObjectDate): ObjectDate => {
+  if (date.m <= 1) return {
+    d: date.d,
+    m: 12,
+    y: date.y - 1
+  }
+  return {
+    ...date,
+    m: date.m - 1
+  }
+}

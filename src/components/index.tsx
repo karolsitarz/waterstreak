@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Input from './Input';
 import Progress from './HydroProgress';
 import { today } from '../util/time';
-// import console = require('console');
+import Calendar from './Calendar';
 
 const Section = styled.div`
   min-height: 100vh;
@@ -27,6 +27,9 @@ export default class Hello extends React.Component<{}> {
           </div>
           <Progress date={today()} border={0.075} />
           <Input />
+        </Section>
+        <Section>
+          <Calendar />
         </Section>
       </>
     );

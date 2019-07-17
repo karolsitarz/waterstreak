@@ -17,7 +17,7 @@ const open = async () =>
 
 export const addToDB = async (volume: number, date: Date = new Date()) => {
   const db = await open();
-  await db.put('waterstreak_data', volume, new Date().getTime());
+  await db.put('waterstreak_data', volume, date.getTime());
 };
 
 export const getByKey = async (key: number) => {
