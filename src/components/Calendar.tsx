@@ -25,6 +25,31 @@ const CalendarItem = styled.div<{ pos?: number, disabled?: boolean }>`
   opacity: ${props => props.disabled ? 0.3 : 1};
 `;
 
+const ControlBar = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  height: 2em;
+  width: 100%;
+`;
+
+const Button = styled.div`
+  height: 100%;
+  width: 2em;
+  background: #0002;
+  flex-shrink: 0;
+`;
+
+const InfoBar = styled.div`
+  flex-grow: 1;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: .75em;
+`;
+
 
 const generateDays = (date: ObjectDate): JSX.Element[] => {
   const daysInMonth = getDaysInMonth(date.y, date.m);
@@ -111,8 +136,11 @@ export default class Calendar extends Component<{}, State> {
   render() {
     return (
       <div>
-        <div onClick={() => this.setState({ date: prevMonth(this.state.date) })}>prev</div>
-        <div onClick={() => this.setState({ date: nextMonth(this.state.date) })}>next</div>
+        <ControlBar>
+          <Button onClick={() => this.setState({ date: prevMonth(this.state.date) })} />
+          <InfoBar>{`${this.state.date.m < 10 ? '0' + this.state.date.m : this.state.date.m}-${this.state.date.y}`}</InfoBar>
+          <Button onClick={() => this.setState({ date: nextMonth(this.state.date) })} />
+        </ControlBar>
         <CalendarContainer>
           {generateDays(this.state.date)}
         </CalendarContainer>
