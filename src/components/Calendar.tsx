@@ -5,14 +5,19 @@ import { ObjectDate, getFirstDay, getDaysInMonth, prevMonth, nextMonth } from '.
 import HydroProgress from './HydroProgress';
 
 const CalendarContainer = styled.div`
+  width: 100%;
+  max-width: 20em;
+  font-size: .75em;
+  font-weight: bold;
+`;
+
+const WeekContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   width: 100%;
   place-items: center;
-  max-width: 20em;
-  font-size: .75em;
-  font-weight: bold;
   grid-gap: .25em;
+  margin: .25em 0;
 `;
 
 const CalendarItem = styled.div<{ pos?: number, disabled?: boolean }>`
@@ -25,6 +30,7 @@ const generateDays = (date: ObjectDate): JSX.Element[] => {
   const daysInMonth = getDaysInMonth(date.y, date.m);
   const firstDay = getFirstDay(date.y, date.m) > 0 ? getFirstDay(date.y, date.m) : 7;
 
+  const tempArray: JSX.Element[] = [];
   const returnArray: JSX.Element[] = [];
 
   // days peeking in the previous month
@@ -34,7 +40,7 @@ const generateDays = (date: ObjectDate): JSX.Element[] => {
 
     for (let i = 1; i < firstDay; i++) {
       const day = daysInPrevMonth - firstDay + 1 + i;
-      returnArray.push(
+      tempArray.push(
         <CalendarItem
           disabled={true}
           pos={i}
@@ -51,7 +57,7 @@ const generateDays = (date: ObjectDate): JSX.Element[] => {
   let weekDay = firstDay;
   // days in the current month
   for (let i = 1; i <= daysInMonth; i++) {
-    returnArray.push(
+    tempArray.push(
       <CalendarItem
         pos={weekDay++}
         key={`${date.y}-${date.m}-${i}`}>
@@ -61,14 +67,18 @@ const generateDays = (date: ObjectDate): JSX.Element[] => {
         </HydroProgress>
       </CalendarItem>
     );
-    if (weekDay > 7) weekDay = 1;
+    if (weekDay > 7) {
+      returnArray.push(<WeekContainer key={`${tempArray[0].key}--${tempArray[6].key}`}>{[...tempArray]}</WeekContainer>);
+      tempArray.splice(0);
+      weekDay = 1;
+    }
   }
 
   // days peeking in the next month
   if ((daysInMonth + firstDay - 1) % 7 > 0) {
     const next = nextMonth(date);
     for (let i = 1; i <= 7 - (daysInMonth + firstDay - 1) % 7; i++) {
-      returnArray.push(
+      tempArray.push(
         <CalendarItem
           disabled={true}
           pos={weekDay++}
@@ -80,6 +90,7 @@ const generateDays = (date: ObjectDate): JSX.Element[] => {
         </CalendarItem>
       );
     }
+    returnArray.push(<WeekContainer key={`${tempArray[0].key}--${tempArray[6].key}`}>{[...tempArray]}</WeekContainer>);
   }
 
   return returnArray;

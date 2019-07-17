@@ -17,6 +17,11 @@ const Section = styled.div`
   align-items: center;
 `;
 
+const Space = styled.div<{ size: number }>`
+  width: ${props => props.size}em;
+  height: ${props => props.size}em;
+`;
+
 export default class Hello extends React.Component<{}> {
   render() {
     return (
@@ -26,7 +31,9 @@ export default class Hello extends React.Component<{}> {
             <h1>Hello, there!</h1>
             <h2>You're doing great!</h2>
           </div>
-          <Progress date={today()} />
+          <Space size={1.5} />
+          <Progress main={true} date={today()} />
+          <Space size={2.5} />
           <Input />
         </Section>
         <Section>

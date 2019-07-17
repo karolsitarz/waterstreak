@@ -9,6 +9,7 @@ const GOAL = 2000;
 type Props = {
   date: ObjectDate
   border?: number
+  main?: boolean
 }
 
 type State = {
@@ -34,6 +35,7 @@ export default class HydroProgress extends Component<Props, State> {
   render() {
     return (
       <Progress
+        main={this.props.main}
         progress={this.state.progress / GOAL}>
         {this.props.children}
       </Progress>
