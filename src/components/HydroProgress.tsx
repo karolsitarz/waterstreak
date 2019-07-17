@@ -38,6 +38,7 @@ export default class HydroProgress extends Component<Props, State> {
   }
   async updateValue () {
     const values = await getValuesDay(this.props.date);
+    if (Array.isArray(values) && values.length === 0 && this.state.progress === 0) return;
     const progress = values.reduce(((r, c) => r += c), 0);
     this.setState({ progress });
   }
