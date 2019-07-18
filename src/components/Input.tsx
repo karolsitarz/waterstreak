@@ -48,6 +48,24 @@ const SlidersContainer = styled.div`
   max-width: 100%;
   overflow-y: hidden;
   display: flex;
+  &::before, &::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    left: 0;
+    right: 0;
+    height: 1.25em;
+    pointer-events: none;
+    z-index: 2;
+  }
+  &::before {
+    top: 0;
+    background-image: linear-gradient(to bottom, var(--light), transparent);
+  }
+  &::after {
+    bottom: 0;
+    background-image: linear-gradient(to top, var(--light), transparent);
+  }
 `;
 
 const DrinkButton = styled.div`
@@ -95,7 +113,7 @@ export default class Input extends Component {
       <InputContainer>
         <SlidersContainer>
           <ScrollContainer
-            style={{margin: '0 1em 0 2em'}}
+            style={{ padding: '0 1em 0 2em' }}
             ref={((e: HTMLDivElement) => this.mlScrollEl = e)}>
             <div className="swiper-wrapper">
               {mlValues.map(c =>
@@ -107,7 +125,7 @@ export default class Input extends Component {
             </div>
           </ScrollContainer>
           <ScrollContainer
-            style={{margin: '0 2em 0 1em'}}
+            style={{ padding: '0 2em 0 1em' }}
             ref={((e: HTMLDivElement) => this.timeScrollEl = e)}>
             <div className="swiper-wrapper">
               {timeValues.map(c => 
