@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import { ObjectDate, getFirstDay, getDaysInMonth, prevMonth, nextMonth } from '../util/time';
+import { ObjectDate, getFirstDay, getDaysInMonth, prevMonth, nextMonth, today } from '../util/time';
 import HydroProgress from './HydroProgress';
+
+const thisDay = today();
 
 const CalendarContainer = styled.div`
   width: 100%;
@@ -37,11 +39,21 @@ const ControlBar = styled.div`
 const Button = styled.div`
   height: 100%;
   width: 2em;
-  background: #0002;
+  fill: var(--secondary);
   flex-shrink: 0;
+  svg {
+    width: 70%;
+    height: 70%;
+    position: absolute;
+    object-fit: contain;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
 `;
 
 const InfoBar = styled.div`
+  color: var(--main);
   flex-grow: 1;
   height: 100%;
   display: flex;
@@ -137,9 +149,24 @@ export default class Calendar extends Component<{}, State> {
     return (
       <div>
         <ControlBar>
-          <Button onClick={() => this.setState({ date: prevMonth(this.state.date) })} />
-          <InfoBar>{`${this.state.date.m < 10 ? '0' + this.state.date.m : this.state.date.m}-${this.state.date.y}`}</InfoBar>
-          <Button onClick={() => this.setState({ date: nextMonth(this.state.date) })} />
+          <Button
+            onClick={() => this.setState({ date: prevMonth(this.state.date) })}>
+            <svg viewBox="0 0 600 600">
+              <path d="M400.888,428.791L272.643,300,400.888,171.208a34.686,34.686,0,0,0-49.1-49L199.143,275.5a34.681,34.681,0,0,0,0,49.005L351.787,477.8a34.686,34.686,0,0,0,49.1-49.007h0Z"/>
+            </svg>
+          </Button>
+          <InfoBar
+            onClick={() => this.setState({ date: {...this.state.date, m: thisDay.m, y: thisDay.y} })}>
+            {`${this.state.date.m < 10
+              ? '0' + this.state.date.m
+              : this.state.date.m}-${this.state.date.y}`}
+          </InfoBar>
+          <Button
+          onClick={() => this.setState({ date: nextMonth(this.state.date) })}>
+            <svg viewBox="0 0 600 600">
+              <path d="M198.528,170.645L326.9,299.5,198.528,428.356a34.712,34.712,0,1,0,49.15,49.029l152.794-153.37a34.685,34.685,0,0,0,0-49.029L247.678,121.613a34.713,34.713,0,0,0-49.15,49.032h0Z"/>
+            </svg>
+          </Button>
         </ControlBar>
         <CalendarContainer>
           {generateDays(this.state.date)}
