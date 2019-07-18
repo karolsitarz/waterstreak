@@ -72,13 +72,13 @@ const DrinkButton = styled.div`
   background-color: var(--accent);
   background-image: var(--gradient);
   border-radius: .75em;
-  padding: .75em 2em;
+  padding: .5em 2em;
   color: #fff;
   box-shadow: 0 0.5em 1em 0 rgba(0, 0, 0, 0.2);
 `;
 
 const ScrollElement = styled.div`
-  height: 3em;
+  height: 100%;
   width: 100%;
   display: flex;
   justify-content: center;

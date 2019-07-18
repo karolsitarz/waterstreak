@@ -6,13 +6,6 @@ import HydroProgress from './HydroProgress';
 
 const thisDay = today();
 
-const CalendarContainer = styled.div`
-  width: 100%;
-  max-width: 20em;
-  font-size: .75em;
-  font-weight: bold;
-`;
-
 const WeekContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -20,6 +13,9 @@ const WeekContainer = styled.div`
   place-items: center;
   grid-gap: .25em;
   margin: .25em 0;
+  max-width: 20em;
+  font-size: .75em;
+  font-weight: bold;
 `;
 
 const CalendarItem = styled.div<{ pos?: number, disabled?: boolean }>`
@@ -39,11 +35,11 @@ const ControlBar = styled.div`
 const Button = styled.div`
   height: 100%;
   width: 2em;
-  fill: var(--secondary);
+  fill: #0004;
   flex-shrink: 0;
   svg {
-    width: 70%;
-    height: 70%;
+    width: 60%;
+    height: 60%;
     position: absolute;
     object-fit: contain;
     left: 50%;
@@ -168,9 +164,9 @@ export default class Calendar extends Component<{}, State> {
             </svg>
           </Button>
         </ControlBar>
-        <CalendarContainer>
+        <div>
           {generateDays(this.state.date)}
-        </CalendarContainer>
+        </div>
       </div>
     );
   }

@@ -26,6 +26,8 @@ const RingContainer = styled.div<{ main?: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
+  background-image: radial-gradient(ellipse at center, transparent 60%,rgba(0,0,0,0.125) 60%);
+  border-radius: 50%;
 `;
 
 const Content = styled.div<{ main?: boolean }>`
@@ -69,30 +71,19 @@ export default class ProgressRing extends Component<Props, State> {
 
   componentDidMount() {
     this.state.progress = this.props.progress;
-    this.drawRing();
 
     const ctx = this.canvas.getContext('2d');
     ctx.lineCap = 'round';
+    ctx.lineWidth = size * stroke;
     this.gradient = ctx.createLinearGradient(0, 0, 0, size);
     this.gradient.addColorStop(0, '#00cffc');
     this.gradient.addColorStop(1, '#008ffc');
   }
 
-  drawRing() {
+  drawPercentage(p: number, clear: boolean = false) {
     const ctx = this.canvas.getContext('2d');
 
-    ctx.clearRect(0, 0, size, size);
-    ctx.lineWidth = size * stroke;
-    ctx.strokeStyle = '#0002';
-    ctx.beginPath();
-    ctx.arc(size / 2, size / 2, size * (1 - stroke) / 2, 0, 2 * Math.PI);
-    ctx.stroke();
-    // ctx.strokeStyle = '#008ffc';
-  }
-
-  drawPercentage(p: number) {
-    const ctx = this.canvas.getContext('2d');
-
+    if (clear) ctx.clearRect(0, 0, size, size);
     ctx.strokeStyle = this.gradient;
     ctx.beginPath();
     ctx.arc(size / 2, size / 2, size * (1 - stroke) / 2, -Math.PI / 2, Math.PI * p * 2 - Math.PI / 2);
@@ -107,9 +98,8 @@ export default class ProgressRing extends Component<Props, State> {
     const loop = () => {
       if (this.canvas == null) return;
       if (t++ > chunkTime) return;
-  
-      if (start > end) this.drawRing();
-      this.drawPercentage(ease(t / chunkTime) * (end - start) + start);
+
+      this.drawPercentage(ease(t / chunkTime) * (end - start) + start, end < start);
       requestAnimationFrame(loop);
     }
     loop();
