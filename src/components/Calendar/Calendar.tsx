@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
-import { ObjectDate, getFirstDay, getDaysInMonth, prevMonth, nextMonth, today } from '../util/time';
-import HydroProgress from './HydroProgress';
+import { ObjectDate, getFirstDay, getDaysInMonth, prevMonth, nextMonth, today } from '../../util/time';
+import { CalendarItem, StyledCalendarItem } from './CalendarItem';
 
 const thisDay = today();
+
 
 const WeekContainer = styled.div`
   display: grid;
@@ -18,10 +19,20 @@ const WeekContainer = styled.div`
   font-weight: bold;
 `;
 
-const CalendarItem = styled.div<{ pos?: number, disabled?: boolean }>`
-  grid-column-start: ${props => props.pos || 'auto'};
-  opacity: ${props => props.disabled ? 0.3 : 1};
+
+const CalendarContainer = styled.div`
+  ${(() => {
+    let styles = '';
+    for (let i = 1; i <= 42; i++) styles += `
+      ${WeekContainer}:nth-child(${Math.ceil(i / 7)}) ${StyledCalendarItem}:nth-child(${i % 7 === 0 ? 7 : i % 7}) {
+        animation-delay: ${0.01 * i}s;
+      }
+    `;
+    return styles;
+  })()}
 `;
+
+//
 
 const ControlBar = styled.div`
   display: flex;
@@ -77,12 +88,8 @@ const generateDays = (date: ObjectDate): JSX.Element[] => {
         <CalendarItem
           disabled={true}
           pos={i}
-          key={`${previous.y}-${previous.m}-${day}`}>
-          <HydroProgress
-            date={{ y: previous.y, m: previous.m, d: i }}>
-            {day}
-          </HydroProgress>
-        </CalendarItem>
+          date={{ y: previous.y, m: previous.m, d: day }}
+          key={`${previous.y}-${previous.m}-${day}`} />
       );
     }
   }
@@ -93,12 +100,8 @@ const generateDays = (date: ObjectDate): JSX.Element[] => {
     tempArray.push(
       <CalendarItem
         pos={weekDay++}
-        key={`${date.y}-${date.m}-${i}`}>
-        <HydroProgress
-          date={{ y: date.y, m: date.m, d: i }}>
-          {i}
-        </HydroProgress>
-      </CalendarItem>
+        date={{ y: date.y, m: date.m, d: i }}
+        key={`${date.y}-${date.m}-${i}`} />
     );
     if (weekDay > 7) {
       returnArray.push(<WeekContainer key={`${tempArray[0].key}--${tempArray[6].key}`}>{[...tempArray]}</WeekContainer>);
@@ -115,12 +118,8 @@ const generateDays = (date: ObjectDate): JSX.Element[] => {
         <CalendarItem
           disabled={true}
           pos={weekDay++}
-          key={`${next.y}-${next.m}-${i}`}>
-          <HydroProgress
-            date={{ y: next.y, m: next.m, d: i }}>
-            {i}
-          </HydroProgress>
-        </CalendarItem>
+          date={{ y: next.y, m: next.m, d: i }}
+          key={`${next.y}-${next.m}-${i}`} />
       );
     }
     returnArray.push(<WeekContainer key={`${tempArray[0].key}--${tempArray[6].key}`}>{[...tempArray]}</WeekContainer>);
@@ -164,9 +163,9 @@ export default class Calendar extends Component<{}, State> {
             </svg>
           </Button>
         </ControlBar>
-        <div>
+        <CalendarContainer>
           {generateDays(this.state.date)}
-        </div>
+        </CalendarContainer>
       </div>
     );
   }

@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 import Progress from './Progress';
-import { ObjectDate } from '../util/time';
-import { getValuesDay } from '../util/db';
-import { addProgressListener, removeProgressListener } from '../util/progressEvent';
+import { ObjectDate } from '../../util/time';
+import { getValuesDay } from '../../util/db';
+import { addProgressListener, removeProgressListener } from '../../util/progressEvent';
 
 const GOAL = 2000;
 
@@ -25,7 +25,7 @@ const H4 = styled.h4`
   line-height: 1em;
 `;
 
-export default class HydroProgress extends Component<Props, State> {
+export default class LinkedProgress extends Component<Props, State> {
   state: Readonly<State> = {
     progress: 0
   }

@@ -1,18 +1,18 @@
 import { ObjectDate, startDay, objectDateToString, dateToString } from './time';
-import HydroProgress from '../components/HydroProgress';
+import LinkedProgress from '../components/Progress/LinkedProgress';
 
 interface Listener {
-  [key: string]: HydroProgress[]
+  [key: string]: LinkedProgress[]
 }
 const listeners: Listener = {};
 
-export const addProgressListener = (element: HydroProgress, date: ObjectDate) => {
+export const addProgressListener = (element: LinkedProgress, date: ObjectDate) => {
   const listener = listeners[objectDateToString(date)];
   if (listener == null) listeners[objectDateToString(date)] = [element];
   else listener.push(element);
 }
 
-export const removeProgressListener = (element: HydroProgress, date: ObjectDate) => {
+export const removeProgressListener = (element: LinkedProgress, date: ObjectDate) => {
   if (!(objectDateToString(date) in listeners)) return;
   if (listeners[objectDateToString(date)] == null) return;
   const i = listeners[objectDateToString(date)].indexOf(element);
