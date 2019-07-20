@@ -5,6 +5,7 @@ import Input from "./Input";
 import Progress from "./Progress/LinkedProgress";
 import { today } from "../util/time";
 import Calendar from "./Calendar";
+import EntryList from "./EntryList";
 
 const Section = styled.div<{ align: string }>`
   min-height: 100vh;
@@ -39,6 +40,7 @@ export default class Hello extends React.Component<{}> {
         </Section>
         <Section align="flex-start">
           <Calendar />
+          <EntryList />
         </Section>
       </>
     );

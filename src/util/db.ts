@@ -28,26 +28,25 @@ export const getByKey = async (key: number): Promise<number> => {
   return await db.get("waterstreak_data", key);
 };
 
-const getKeysBetween = async (
-  startTime: Date,
-  endTime: Date
-): Promise<number[]> => {
+const getKeysBetween = async (start: Date, end: Date): Promise<number[]> => {
   const db = await open();
   return await db.getAllKeys(
     "waterstreak_data",
-    IDBKeyRange.bound(startTime.getTime(), endTime.getTime())
+    IDBKeyRange.bound(start.getTime(), end.getTime())
   );
 };
 
-const getValuesBetween = async (
-  startTime: Date,
-  endTime: Date
-): Promise<number[]> => {
+const getValuesBetween = async (start: Date, end: Date): Promise<number[]> => {
   const db = await open();
   return await db.getAll(
     "waterstreak_data",
-    IDBKeyRange.bound(startTime.getTime(), endTime.getTime())
+    IDBKeyRange.bound(start.getTime(), end.getTime())
   );
+};
+
+export const getAllKeys = async (): Promise<number[]> => {
+  const db = await open();
+  return await db.getAllKeys("waterstreak_data");
 };
 
 export const getKeysDay = async (

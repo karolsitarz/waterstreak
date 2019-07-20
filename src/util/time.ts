@@ -72,3 +72,5 @@ export const objectToDate = (object: ObjectDate): Date => {
 export const today = (): ObjectDate => {
   return dateToObject(new Date());
 };
+
+export const printWithZero = (n: number): string => (n < 10 ? `0${n}` : `${n}`);
