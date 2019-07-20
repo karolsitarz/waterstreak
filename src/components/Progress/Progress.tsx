@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
-import BezierEasing from 'bezier-easing';
+import React, { Component } from "react";
+import styled from "styled-components";
+import BezierEasing from "bezier-easing";
 
 const size = 400;
 const time = 250;
 const stroke = 0.075;
 const ease = BezierEasing(0.43, 0, 0.43, 1);
 
-type Props = {
-  progress: number
+interface Props {
+  progress: number;
 }
 
-type State = {
-  progress: number
-  previousProgress: number
+interface State {
+  progress: number;
+  previousProgress: number;
 }
 
 const RingContainer = styled.div<{ main?: boolean }>`
@@ -26,7 +26,11 @@ const RingContainer = styled.div<{ main?: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: radial-gradient(ellipse at center, transparent 60%,rgba(0,0,0,0.125) 60%);
+  background-image: radial-gradient(
+    ellipse at center,
+    transparent 60%,
+    rgba(0, 0, 0, 0.125) 60%
+  );
   border-radius: 50%;
 `;
 
@@ -50,68 +54,76 @@ const Canvas = styled.canvas`
 `;
 
 export default class ProgressRing extends Component<Props, State> {
-  canvas: HTMLCanvasElement;
-  state: State = {
+  private canvas: HTMLCanvasElement;
+  private gradient: CanvasGradient;
+  public state: State = {
     progress: this.props.progress,
     previousProgress: 0
   };
-  gradient: CanvasGradient;
 
-  static getDerivedStateFromProps(props: Props, state: State) {
+  public static getDerivedStateFromProps(props: Props, state: State): State {
     if (props.progress === state.progress) return null;
-    else return {
-      progress: props.progress,
-      previousProgress: state.progress
-    }
+    else
+      return {
+        progress: props.progress,
+        previousProgress: state.progress
+      };
   }
-  componentDidUpdate() {
+  public componentDidUpdate(): void {
     if (this.state.previousProgress - this.state.progress !== 0)
       this.animate(this.state.previousProgress, this.state.progress);
   }
 
-  componentDidMount() {
-    this.state.progress = this.props.progress;
+  public componentDidMount(): void {
+    this.setState({ progress: this.props.progress });
 
-    const ctx = this.canvas.getContext('2d');
-    ctx.lineCap = 'round';
+    const ctx = this.canvas.getContext("2d");
+    ctx.lineCap = "round";
     ctx.lineWidth = size * stroke;
     this.gradient = ctx.createLinearGradient(0, 0, 0, size);
-    this.gradient.addColorStop(0, '#00cffc');
-    this.gradient.addColorStop(1, '#008ffc');
+    this.gradient.addColorStop(0, "#00cffc");
+    this.gradient.addColorStop(1, "#008ffc");
   }
 
-  drawPercentage(p: number, clear: boolean = false) {
-    const ctx = this.canvas.getContext('2d');
+  private drawPercentage(p: number, clear: boolean = false): void {
+    const ctx = this.canvas.getContext("2d");
 
     if (clear) ctx.clearRect(0, 0, size, size);
     ctx.strokeStyle = this.gradient;
     ctx.beginPath();
-    ctx.arc(size / 2, size / 2, size * (1 - stroke) / 2, -Math.PI / 2, Math.PI * p * 2 - Math.PI / 2);
+    ctx.arc(
+      size / 2,
+      size / 2,
+      (size * (1 - stroke)) / 2,
+      -Math.PI / 2,
+      Math.PI * p * 2 - Math.PI / 2
+    );
     ctx.stroke();
   }
 
-  animate(start: number, end: number) {
+  private animate(start: number, end: number): void {
     start = start < 0 ? 0 : start;
     end = end > 1 ? 1 : end;
     const chunkTime = Math.abs(time * (end - start));
     let t = 0;
-    const loop = () => {
+    const loop = (): void => {
       if (this.canvas == null) return;
       if (t++ > chunkTime) return;
 
-      this.drawPercentage(ease(t / chunkTime) * (end - start) + start, end < start);
+      this.drawPercentage(
+        ease(t / chunkTime) * (end - start) + start,
+        end < start
+      );
       requestAnimationFrame(loop);
-    }
+    };
     loop();
   }
 
-  render() {
+  public render(): JSX.Element {
     return (
       <RingContainer>
         <Canvas width={size} height={size} ref={e => (this.canvas = e)} />
-        <Content>
-          {this.props.children}
-        </Content>
+        <Content>{this.props.children}</Content>
       </RingContainer>
     );
   }

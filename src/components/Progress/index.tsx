@@ -1,3 +1,3 @@
-import Progress from './LinkedProgress';
+import Progress from "./LinkedProgress";
 
 export default Progress;

@@ -1,21 +1,24 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
+import React, { Component } from "react";
+import styled from "styled-components";
 
-import Progress from './Progress';
-import { ObjectDate } from '../../util/time';
-import { getValuesDay } from '../../util/db';
-import { addProgressListener, removeProgressListener } from '../../util/progressEvent';
+import Progress from "./Progress";
+import { ObjectDate } from "../../util/time";
+import { getValuesDay } from "../../util/db";
+import {
+  addProgressListener,
+  removeProgressListener
+} from "../../util/progressEvent";
 
 const GOAL = 2000;
 
-type Props = {
-  date: ObjectDate
-  border?: number
-  main?: boolean
+interface Props {
+  date: ObjectDate;
+  border?: number;
+  main?: boolean;
 }
 
-type State = {
-  progress: number
+interface State {
+  progress: number;
 }
 
 const H1 = styled.h1`
@@ -26,37 +29,42 @@ const H4 = styled.h4`
 `;
 
 export default class LinkedProgress extends Component<Props, State> {
-  state: Readonly<State> = {
+  public state: Readonly<State> = {
     progress: 0
-  }
-  componentDidMount() {
+  };
+  public componentDidMount(): void {
     addProgressListener(this, this.props.date);
     this.updateValue();
   }
-  componentWillUnmount() {
+  public componentWillUnmount(): void {
     removeProgressListener(this, this.props.date);
   }
-  async updateValue () {
+  public async updateValue(): Promise<void> {
     const values = await getValuesDay(this.props.date);
-    if (Array.isArray(values) && values.length === 0 && this.state.progress === 0) return;
-    const progress = values.reduce(((r, c) => r += c), 0);
+    if (
+      Array.isArray(values) &&
+      values.length === 0 &&
+      this.state.progress === 0
+    )
+      return;
+    const progress = values.reduce((r, c) => (r += c), 0);
     this.setState({ progress });
   }
-  render() {
+  public render(): JSX.Element {
     return this.props.main ? (
-      <Progress
-        progress={this.state.progress / GOAL}>
-        {this.state.progress > GOAL
-          ? <H4>Goal reached!</H4>
-          : <>
+      <Progress progress={this.state.progress / GOAL}>
+        {this.state.progress > GOAL ? (
+          <H4>Goal reached!</H4>
+        ) : (
+          <>
             <H1>{GOAL - this.state.progress}</H1>
             <H4>ml to go</H4>
-          </>}
+          </>
+        )}
         <h6>out of {GOAL}</h6>
       </Progress>
     ) : (
-      <Progress
-        progress={this.state.progress / GOAL}>
+      <Progress progress={this.state.progress / GOAL}>
         {this.props.children}
       </Progress>
     );

@@ -1,5 +1,5 @@
-import { createGlobalStyle, css } from 'styled-components';
-import swiper from './swiper-styles';
+import { createGlobalStyle } from "styled-components";
+import swiper from "./swiper-styles";
 
 export default createGlobalStyle`
   @import url('https://fonts.googleapis.com/css?family=Montserrat:500,700&display=swap&subset=latin-ext');

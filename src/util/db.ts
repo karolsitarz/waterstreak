@@ -1,57 +1,65 @@
-import { openDB, DBSchema } from 'idb';
-import { startDay, endDay, ObjectDate, today, objectToDate } from './time';
- 
+import { openDB, DBSchema, IDBPDatabase } from "idb";
+import { startDay, endDay, ObjectDate, today, objectToDate } from "./time";
+
 interface MyDB extends DBSchema {
-  'waterstreak_data': {
-    key: number
-    value: number
-  }
+  waterstreak_data: {
+    key: number;
+    value: number;
+  };
 }
 
-const open = async () => 
-  await openDB<MyDB>('waterstreak', 1, {
-    upgrade(db) {
-      db.createObjectStore('waterstreak_data');
+const open = async (): Promise<IDBPDatabase<MyDB>> =>
+  await openDB<MyDB>("waterstreak", 1, {
+    upgrade(db): void {
+      db.createObjectStore("waterstreak_data");
     }
   });
 
-export const addToDB = async (volume: number, date: Date = new Date()) => {
+export const addToDB = async (
+  volume: number,
+  date: Date = new Date()
+): Promise<void> => {
   const db = await open();
-  await db.put('waterstreak_data', volume, date.getTime());
+  await db.put("waterstreak_data", volume, date.getTime());
 };
 
-export const getByKey = async (key: number) => {
+export const getByKey = async (key: number): Promise<number> => {
   const db = await open();
-  return await
-    db.get('waterstreak_data', key);
+  return await db.get("waterstreak_data", key);
 };
 
-const getKeysBetween = async (startTime: Date, endTime: Date) => {
+const getKeysBetween = async (
+  startTime: Date,
+  endTime: Date
+): Promise<number[]> => {
   const db = await open();
-  return await 
-    db.getAllKeys(
-      'waterstreak_data',
-      IDBKeyRange.bound(
-        startTime.getTime(),
-        endTime.getTime()));
+  return await db.getAllKeys(
+    "waterstreak_data",
+    IDBKeyRange.bound(startTime.getTime(), endTime.getTime())
+  );
 };
 
-const getValuesBetween = async (startTime: Date, endTime: Date) => {
+const getValuesBetween = async (
+  startTime: Date,
+  endTime: Date
+): Promise<number[]> => {
   const db = await open();
-  return await 
-    db.getAll(
-      'waterstreak_data',
-      IDBKeyRange.bound(
-        startTime.getTime(),
-        endTime.getTime()));
+  return await db.getAll(
+    "waterstreak_data",
+    IDBKeyRange.bound(startTime.getTime(), endTime.getTime())
+  );
 };
 
-export const getKeysDay = async (date: ObjectDate = today()) => {
+export const getKeysDay = async (
+  date: ObjectDate = today()
+): Promise<number[]> => {
   const tempDate = objectToDate(date);
   return getKeysBetween(startDay(tempDate), endDay(tempDate));
 };
 
-export const getValuesDay = async (date: ObjectDate = today()) => {
+export const getValuesDay = async (
+  date: ObjectDate = today()
+): Promise<number[]> => {
   const tempDate = objectToDate(date);
   return getValuesBetween(startDay(tempDate), endDay(tempDate));
 };

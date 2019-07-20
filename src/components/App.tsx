@@ -1,10 +1,10 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
-import Input from './Input';
-import Progress from './Progress/LinkedProgress';
-import { today } from '../util/time';
-import Calendar from './Calendar';
+import Input from "./Input";
+import Progress from "./Progress/LinkedProgress";
+import { today } from "../util/time";
+import Calendar from "./Calendar";
 
 const Section = styled.div<{ align: string }>`
   min-height: 100vh;
@@ -22,20 +22,22 @@ const Space = styled.div<{ size: number }>`
 `;
 
 export default class Hello extends React.Component<{}> {
-  render() {
+  public render(): JSX.Element {
     return (
       <>
-        <Section align='center'>
+        <Section align="center">
           <div>
             <h1>Hello, there!</h1>
-            <h2 style={{color: 'var(--secondary)'}}>You're doing great!</h2>
+            <h2 style={{ color: "var(--secondary)" }}>
+              You&apos;re doing great!
+            </h2>
           </div>
           <Space size={1.5} />
           <Progress main={true} date={today()} />
           <Space size={2.5} />
           <Input />
         </Section>
-        <Section align='flex-start'>
+        <Section align="flex-start">
           <Calendar />
         </Section>
       </>
