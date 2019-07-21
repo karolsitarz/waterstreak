@@ -7,9 +7,9 @@ import { today } from "../util/time";
 import Calendar from "./Calendar";
 import EntryList from "./EntryList";
 
-const Section = styled.div<{ align: string }>`
-  min-height: 100vh;
-  padding: 1em;
+const Section = styled.div<{ align: string; main?: boolean }>`
+  min-height: ${props => (props.main ? "100vh" : "")};
+  padding: 1.5em;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -26,12 +26,12 @@ export default class Hello extends React.Component<{}> {
   public render(): JSX.Element {
     return (
       <>
-        <Section align="center">
+        <Section align="center" main={true}>
           <div>
             <h1>Hello, there!</h1>
-            <h2 style={{ color: "var(--secondary)" }}>
+            <h3 style={{ color: "var(--secondary)" }}>
               You&apos;re doing great!
-            </h2>
+            </h3>
           </div>
           <Space size={1.5} />
           <Progress main={true} date={today()} />

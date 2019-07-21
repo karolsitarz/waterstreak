@@ -23,14 +23,23 @@ const StyledEntryList = styled.div`
 
 const Button = styled.div`
   font-weight: bold;
-  padding: 0.5em 0;
+  padding: 0.5em 2em;
   background-image: var(--gradient);
-  width: 100%;
+  max-width: 100%;
   z-index: 1;
-  margin-top: 2em;
   border-radius: 0.5em;
   box-shadow: 0 0.75em 1em #0001;
   color: var(--bg);
+  align-self: center;
+  margin: 1em 0;
+`;
+
+const EndText = styled.span`
+  display: inline-block;
+  margin: 1em 0;
+  color: var(--secondary);
+  font-style: italic;
+  font-size: 0.75em;
 `;
 
 export default class EntryList extends Component {
@@ -80,11 +89,15 @@ export default class EntryList extends Component {
     return (
       <StyledEntryList>
         {this.state.entries.slice(0, this.state.length)}
-        <Button
-          onClick={() => this.setState({ length: this.state.length + 3 })}
-        >
-          more
-        </Button>
+        {this.state.length > this.state.entries.length ? (
+          <EndText>there are no more entries</EndText>
+        ) : (
+          <Button
+            onClick={() => this.setState({ length: this.state.length + 3 })}
+          >
+            more
+          </Button>
+        )}
       </StyledEntryList>
     );
   }

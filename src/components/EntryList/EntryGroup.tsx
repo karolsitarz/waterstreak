@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { printWithZero } from "../../util/time";
 
 interface Props {
@@ -19,8 +19,18 @@ const Label = styled.div`
   box-shadow: 0 0.75em 1em #0001;
 `;
 
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+`;
+
 const StyledEntryGroup = styled.div`
   width: 100%;
+  animation-name: ${fadeIn};
+  animation-timing-function: ease;
+  animation-fill-mode: backwards;
+  animation-duration: 0.5s;
 `;
 
 export default class EntryGroup extends Component<Props> {

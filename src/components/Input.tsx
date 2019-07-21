@@ -86,6 +86,7 @@ const ScrollElement = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  white-space: nowrap;
 `;
 
 const ScrollContainer = styled.div`
