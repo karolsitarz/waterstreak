@@ -2,7 +2,11 @@ import React, { Component } from "react";
 import styled from "styled-components";
 
 import { printWithZero } from "../../util/time";
-import { getByKey } from "../../util/db";
+import { getByKey, deleteByKey } from "../../util/db";
+import { dispatchListeners } from "../../util/progressEvent";
+import DeleteButton, { StyledButton } from "./DeleteButton";
+
+const timeLimit = 9 * 3600000;
 
 interface Props {
   $id: number;
@@ -11,14 +15,6 @@ interface Props {
 interface State {
   value: number;
 }
-
-const StyledEntry = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1em 0.5em;
-  font-weight: bold;
-`;
 
 const Volume = styled.span`
   background-image: var(--gradient);
@@ -29,6 +25,26 @@ const Volume = styled.span`
 
 const Time = styled.span`
   color: var(--secondary);
+`;
+
+const RightSide = styled.span`
+  transition: opacity 0.3s ease, transform 0.3s ease;
+`;
+
+const StyledEntry = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1em 0.5em;
+  font-weight: bold;
+  &:hover ${StyledButton} {
+    transform: translate3d(-1em, -50%, 0);
+    opacity: 1;
+    pointer-events: auto;
+    & ~ ${RightSide} {
+      transform: translate3d(-2.5em, 0, 0);
+    }
+  }
 `;
 
 export default class Entry extends Component<Props, State> {
@@ -42,17 +58,27 @@ export default class Entry extends Component<Props, State> {
     const value = await getByKey(this.props.$id);
     this.setState({ value });
   }
+  private async deleteEntry(): Promise<void> {
+    const time = this.props.$id;
+    if (new Date().getTime() - time > timeLimit) return;
+    await deleteByKey(time);
+    dispatchListeners(new Date(time));
+  }
   public render(): JSX.Element {
-    const dateTime = new Date(this.props.$id);
+    const time = this.props.$id;
+    const dateTime = new Date(time);
     return (
       <StyledEntry>
+        {new Date().getTime() - time > timeLimit ? null : (
+          <DeleteButton onClickHandle={() => this.deleteEntry()} />
+        )}
         <Time>
           {printWithZero(dateTime.getHours())}:
           {printWithZero(dateTime.getMinutes())}
         </Time>
-        <span>
+        <RightSide>
           <Volume>{this.state.value}</Volume>ml
-        </span>
+        </RightSide>
       </StyledEntry>
     );
   }

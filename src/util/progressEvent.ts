@@ -32,7 +32,7 @@ export const addEntryListener = (element: EntryList): void => {
   entries = element;
 };
 
-export const dispatchProgressEvent = (date: Date): void => {
+export const dispatchListeners = (date: Date): void => {
   const tempStartDay = startDay(date);
   const progresses = listeners[dateToString(tempStartDay)];
 

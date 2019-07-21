@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Swiper } from "swiper/dist/js/swiper.esm.js";
 
 import { addToDB } from "../util/db";
-import { dispatchProgressEvent } from "../util/progressEvent";
+import { dispatchListeners } from "../util/progressEvent";
 import { subtractTime } from "../util/time";
 
 interface SwiperValues {
@@ -154,6 +154,6 @@ export default class Input extends Component {
       timeValues[this.timeSwiper.activeIndex].value * 60000
     );
     await addToDB(mlValue, timeValue);
-    dispatchProgressEvent(timeValue);
+    dispatchListeners(timeValue);
   }
 }

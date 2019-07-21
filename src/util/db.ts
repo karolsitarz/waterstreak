@@ -28,6 +28,11 @@ export const getByKey = async (key: number): Promise<number> => {
   return await db.get("waterstreak_data", key);
 };
 
+export const deleteByKey = async (key: number): Promise<void> => {
+  const db = await open();
+  return await db.delete("waterstreak_data", key);
+};
+
 const getKeysBetween = async (start: Date, end: Date): Promise<number[]> => {
   const db = await open();
   return await db.getAllKeys(

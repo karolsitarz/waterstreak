@@ -17,6 +17,7 @@ const Label = styled.div`
   margin-top: 2em;
   border-radius: 0.5em;
   box-shadow: 0 0.75em 1em #0001;
+  font-size: 0.85em;
 `;
 
 const fadeIn = keyframes`
