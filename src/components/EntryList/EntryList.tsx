@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { getAllKeys } from "../../util/db";
 import Entry from "./Entry";
 import EntryGroup from "./EntryGroup";
+import { addEntryListener } from "../../util/progressEvent";
 
 interface State {
   entries: number[];
@@ -48,9 +49,12 @@ export default class EntryList extends Component {
     length: 3
   };
   public componentDidMount(): void {
+    // initial entries
     this.getValues();
+    // add listener for live updating
+    addEntryListener(this);
   }
-  private async getValues(): Promise<void> {
+  public async getValues(): Promise<void> {
     let keys: number[] = await getAllKeys();
     keys = keys.sort().reverse();
     const entries: JSX.Element[] = [];

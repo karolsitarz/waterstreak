@@ -1,10 +1,12 @@
 import { ObjectDate, startDay, objectDateToString, dateToString } from "./time";
 import LinkedProgress from "../components/Progress/LinkedProgress";
+import EntryList from "../components/EntryList";
 
 interface Listener {
   [key: string]: LinkedProgress[];
 }
 const listeners: Listener = {};
+let entries: EntryList;
 
 export const addProgressListener = (
   element: LinkedProgress,
@@ -26,10 +28,15 @@ export const removeProgressListener = (
   listeners[objectDateToString(date)].splice(i, 1);
 };
 
+export const addEntryListener = (element: EntryList): void => {
+  entries = element;
+};
+
 export const dispatchProgressEvent = (date: Date): void => {
   const tempStartDay = startDay(date);
   const progresses = listeners[dateToString(tempStartDay)];
 
+  if (entries) entries.getValues();
   if (progresses == null) return;
   for (let element of progresses) element.updateValue();
 };
