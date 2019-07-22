@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const webpack = require("webpack");
+const path = require("path");
 const HtmlWebPackPlugin = require("html-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = (env, argv) => [
   {
@@ -34,11 +36,16 @@ module.exports = (env, argv) => [
       new HtmlWebPackPlugin({
         template: "./src/index.html",
         filename: "./index.html"
+      }),
+      new CleanWebpackPlugin({
+        cleanOnceBeforeBuildPatterns: ["bundle.*.js", "bundle.js"]
       })
     ].filter(Boolean),
+    mode: "development",
     devtool:
       argv.mode === "production" ? "none" : "cheap-module-eval-source-map",
     output: {
+      path: path.join(__dirname, "./dist"),
       filename:
         argv.mode === "production" ? "bundle.[chunkhash].js" : "bundle.js"
     },
