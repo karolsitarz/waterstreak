@@ -1,4 +1,5 @@
 node_modules
-dist/bundle.*.js
-dist/bundle.js
+dist/bundle.*[.js.gz, .js.br, .js]
+dist/bundle[.js.gz, .js.br, .js]
 dist/index.html
+dist/service-worker.js
