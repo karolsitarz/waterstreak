@@ -108,7 +108,10 @@ export default class ProgressRing extends Component<Props, State> {
     let t = 0;
     const loop = (): void => {
       if (this.canvas == null) return;
-      if (t++ > chunkTime) return;
+      if (t++ > chunkTime) {
+        if (end === 0) this.drawPercentage(-1, end < start);
+        return;
+      }
 
       this.drawPercentage(
         ease(t / chunkTime) * (end - start) + start,
