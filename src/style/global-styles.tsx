@@ -39,12 +39,19 @@ export default createGlobalStyle`
   :focus {
     outline: none;
   }
+  @keyframes appFadeIn {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 1em, 0) scale(0.95);
+    }
+  }
   #container {
     width: 100%;
     height: 100%;
     margin: auto;
     text-align: center;
     max-width: 960px;
+    animation: appFadeIn .5s ease backwards;
   }
   svg {
     width: 100%;
