@@ -7,8 +7,9 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const BrotliPlugin = require("brotli-webpack-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
 
-module.exports = (env, argv) => [
-  {
+module.exports = (env, argv) => {
+  const production = argv.mode === "production";
+  return {
     name: "client",
     target: "web",
     entry: "./src/index",
@@ -34,56 +35,56 @@ module.exports = (env, argv) => [
       extensions: [".ts", ".tsx", ".js"]
     },
     plugins: [
-      argv.mode === "production" ? undefined : new webpack.NamedModulesPlugin(),
       new HtmlWebPackPlugin({
         template: "./src/index.html",
         filename: "./index.html"
       }),
-      new CleanWebpackPlugin({
-        cleanOnceBeforeBuildPatterns: [
-          "bundle.*.js",
-          "bundle.*.js.br",
-          "bundle.*.js.gz",
-          "bundle.js",
-          "bundle.js.br",
-          "bundle.js.gz"
-        ]
-      }),
-      argv.mode === "development"
-        ? undefined
-        : new CompressionPlugin({
+      production ? undefined : new webpack.NamedModulesPlugin(),
+      production
+        ? new CleanWebpackPlugin({
+            cleanOnceBeforeBuildPatterns: [
+              "bundle.*.js",
+              "bundle.*.js.br",
+              "bundle.*.js.gz",
+              "bundle.js",
+              "bundle.js.br",
+              "bundle.js.gz"
+            ]
+          })
+        : undefined,
+      production
+        ? new CompressionPlugin({
             filename: "[path].gz[query]",
             algorithm: "gzip",
             test: /\.js$|\.css$|\.html$/,
             threshold: 10240,
             minRatio: 0.8
-          }),
-      argv.mode === "development"
-        ? undefined
-        : new BrotliPlugin({
+          })
+        : undefined,
+      production
+        ? new BrotliPlugin({
             asset: "[path].br[query]",
             test: /\.(js|css|html|svg)$/,
             threshold: 10240,
             minRatio: 0.8
-          }),
-      argv.mode === "development"
-        ? undefined
-        : new SWPrecacheWebpackPlugin({
+          })
+        : undefined,
+      production
+        ? new SWPrecacheWebpackPlugin({
             cacheId: require("./package.json").name,
             minify: true
           })
+        : undefined
     ].filter(Boolean),
     mode: "development",
-    devtool:
-      argv.mode === "production" ? "none" : "cheap-module-eval-source-map",
+    devtool: production ? "none" : "cheap-module-eval-source-map",
     output: {
       path: path.join(__dirname, "./dist"),
-      filename:
-        argv.mode === "production" ? "bundle.[chunkhash].js" : "bundle.js"
+      filename: production ? "bundle.[chunkhash].js" : "bundle.js"
     },
     devServer: {
       contentBase: "./dist",
       open: true
     }
-  }
-];
+  };
+};
