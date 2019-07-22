@@ -35,14 +35,6 @@ const Button = styled.div`
   margin: 1em 0;
 `;
 
-const EndText = styled.span`
-  display: inline-block;
-  margin: 1em 0;
-  color: var(--secondary);
-  font-style: italic;
-  font-size: 0.75em;
-`;
-
 export default class EntryList extends Component {
   public state: State = {
     entries: [],
@@ -56,6 +48,14 @@ export default class EntryList extends Component {
   }
   public async getValues(): Promise<void> {
     let keys: number[] = await getAllKeys();
+    if (keys == null || keys.length === 0) {
+      if (this.state.entries.length === 0) return;
+      else {
+        this.setState({ entries: [] });
+        return;
+      }
+    }
+
     keys = keys.sort().reverse();
     const entries: JSX.Element[] = [];
     const temp: JSX.Element[] = [];
@@ -93,9 +93,7 @@ export default class EntryList extends Component {
     return (
       <StyledEntryList>
         {this.state.entries.slice(0, this.state.length)}
-        {this.state.length > this.state.entries.length ? (
-          <EndText>there are no more entries</EndText>
-        ) : (
+        {this.state.length > this.state.entries.length ? null : (
           <Button
             onClick={() => this.setState({ length: this.state.length + 3 })}
           >
