@@ -5,14 +5,11 @@ import { getAllKeys } from "../../util/db";
 import Entry from "./Entry";
 import EntryGroup from "./EntryGroup";
 import { addEntryListener } from "../../util/progressEvent";
+import { InView } from "react-intersection-observer";
 
 interface State {
   entries: number[];
   length: number;
-}
-
-interface UsedKeys {
-  [key: number]: boolean;
 }
 
 const StyledEntryList = styled.div`
@@ -20,19 +17,6 @@ const StyledEntryList = styled.div`
   flex-direction: column;
   width: 100%;
   max-width: 15em;
-`;
-
-const Button = styled.div`
-  font-weight: bold;
-  padding: 0.5em 2em;
-  background-image: var(--gradient);
-  max-width: 100%;
-  z-index: 1;
-  border-radius: 0.5em;
-  box-shadow: 0 0.75em 1em #0001;
-  color: var(--bg);
-  align-self: center;
-  margin: 1em 0;
 `;
 
 export default class EntryList extends Component {
@@ -89,17 +73,19 @@ export default class EntryList extends Component {
     );
     this.setState({ entries });
   }
+  private getMore(inView: boolean): void {
+    if (!inView) return;
+    if (this.state.length > this.state.entries.length) return;
+
+    this.setState({ length: this.state.length + 2 });
+  }
   public render(): JSX.Element {
     return (
       <StyledEntryList>
         {this.state.entries.slice(0, this.state.length)}
-        {this.state.length > this.state.entries.length ? null : (
-          <Button
-            onClick={() => this.setState({ length: this.state.length + 3 })}
-          >
-            more
-          </Button>
-        )}
+        <InView rootMargin="20px" onChange={inView => this.getMore(inView)}>
+          <></>
+        </InView>
       </StyledEntryList>
     );
   }
