@@ -6,6 +6,7 @@ import Progress from "./Progress/LinkedProgress";
 import { today } from "../util/time";
 import Calendar from "./Calendar";
 import EntryList from "./EntryList";
+import WeekLookup from "./Calendar/WeekLookup";
 
 const Section = styled.div<{ align: string; main?: boolean }>`
   min-height: ${props => (props.main ? "100vh" : "")};
@@ -37,6 +38,8 @@ export default class Hello extends React.Component<{}> {
           <Progress main={true} date={today()} />
           <Space size={2.5} />
           <Input />
+          <Space size={1.5} />
+          <WeekLookup />
         </Section>
         <Section align="flex-start">
           <Calendar />

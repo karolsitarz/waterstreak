@@ -47,4 +47,5 @@ export const StyledCalendarItem = styled.div<{
   animation-timing-function: ease;
   animation-fill-mode: backwards;
   animation-duration: 0.5s;
+  letter-spacing: 0;
 `;
