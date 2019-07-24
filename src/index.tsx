@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 
 import App from "./components/App";
 import GlobalStyles from "./style/global-styles";
+import "./util/debug";
 
 ReactDOM.render(
   <>
