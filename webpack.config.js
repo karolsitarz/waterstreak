@@ -20,7 +20,10 @@ module.exports = (env, argv) => {
           exclude: /node_modules/,
           use: [
             {
-              loader: "babel-loader"
+              loader: "babel-loader",
+              options: {
+                envName: production ? "production" : "development"
+              }
             }
           ]
         },
@@ -76,7 +79,7 @@ module.exports = (env, argv) => {
           })
         : undefined
     ].filter(Boolean),
-    mode: "development",
+    mode: production ? "production" : "development",
     devtool: production ? "none" : "cheap-module-eval-source-map",
     output: {
       path: path.join(__dirname, "./dist"),
