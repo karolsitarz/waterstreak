@@ -82,5 +82,10 @@ export default createGlobalStyle`
     font-size: 20px;
     letter-spacing: -.05em;
   }
+  @media screen and (max-height: 670px) {
+    :root {
+      font-size: 2.85vh;
+    }
+  }
   ${swiper}
 `;
