@@ -9,7 +9,6 @@ A minimal hydration-tracking app. Simple, but has everything you would need.
 ![calendar and entry list](https://i.imgur.com/ROVUIu4.png)
 
 ## to-do list ✅
-  * "fluid" week preview to calendar scroll transition
   * change the hydration goal
   * display the "streak" count
   * dark mode?
