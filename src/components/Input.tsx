@@ -63,11 +63,19 @@ const SlidersContainer = styled.div`
   }
   &::before {
     top: 0;
-    background-image: linear-gradient(to bottom, var(--light), transparent);
+    background-image: linear-gradient(
+      to bottom,
+      var(--light),
+      var(--lighttransparent)
+    );
   }
   &::after {
     bottom: 0;
-    background-image: linear-gradient(to top, var(--light), transparent);
+    background-image: linear-gradient(
+      to top,
+      var(--light),
+      var(--lighttransparent)
+    );
   }
 `;
 

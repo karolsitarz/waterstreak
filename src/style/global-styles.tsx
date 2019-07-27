@@ -74,10 +74,11 @@ export default createGlobalStyle`
   }
   :root {
     --accent: #008ffc;
-    --main: #555;
-    --secondary: #777;
+    --main: #555555;
+    --secondary: #777777;
     --light: #e5e5e5;
-    --bg: #fff;
+    --lighttransparent: rgba(229, 229, 229, 0);
+    --bg: #ffffff;
     --gradient: linear-gradient(to bottom right, #00cffc, #008ffc);
     font-size: 20px;
     letter-spacing: -.05em;
