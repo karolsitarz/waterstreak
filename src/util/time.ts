@@ -16,12 +16,6 @@ export interface ObjectDate {
   d: number;
 }
 
-export const objectDateToString = (object: ObjectDate): string =>
-  `${object.y}-${object.m}-${object.d}`;
-
-export const dateToString = (date: Date): string =>
-  `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
-
 export const subtractTime = (date: Date, ms: number): Date =>
   new Date(date.getTime() - ms);
 
@@ -66,7 +60,7 @@ export const dateToObject = (date: Date): ObjectDate => {
 };
 
 export const objectToDate = (object: ObjectDate): Date => {
-  return new Date(objectDateToString(object));
+  return new Date(`${object.y}-${object.m}-${object.d}`);
 };
 
 export const today = (): ObjectDate => {

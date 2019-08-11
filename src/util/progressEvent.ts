@@ -1,9 +1,9 @@
-import { ObjectDate, startDay, objectDateToString, dateToString } from "./time";
+import { ObjectDate, startDay, objectToDate } from "./time";
 import LinkedProgress from "../components/Progress/LinkedProgress";
 import EntryList from "../components/EntryList";
 
 interface Listener {
-  [key: string]: LinkedProgress[];
+  [key: number]: LinkedProgress[];
 }
 const listeners: Listener = {};
 let entries: EntryList;
@@ -12,8 +12,10 @@ export const addProgressListener = (
   element: LinkedProgress,
   date: ObjectDate
 ): void => {
-  const listener = listeners[objectDateToString(date)];
-  if (listener == null) listeners[objectDateToString(date)] = [element];
+  const id = startDay(objectToDate(date)).getTime();
+
+  const listener = listeners[id];
+  if (listener == null) listeners[id] = [element];
   else listener.push(element);
 };
 
@@ -21,11 +23,13 @@ export const removeProgressListener = (
   element: LinkedProgress,
   date: ObjectDate
 ): void => {
-  if (!(objectDateToString(date) in listeners)) return;
-  if (listeners[objectDateToString(date)] == null) return;
-  const i = listeners[objectDateToString(date)].indexOf(element);
+  const id = startDay(objectToDate(date)).getTime();
+
+  if (!(id in listeners)) return;
+  if (listeners[id] == null) return;
+  const i = listeners[id].indexOf(element);
   if (i < 0) return;
-  listeners[objectDateToString(date)].splice(i, 1);
+  listeners[id].splice(i, 1);
 };
 
 export const addEntryListener = (element: EntryList): void => {
@@ -33,8 +37,8 @@ export const addEntryListener = (element: EntryList): void => {
 };
 
 export const dispatchIntakeListeners = (date: Date): void => {
-  const tempStartDay = startDay(date);
-  const progresses = listeners[dateToString(tempStartDay)];
+  const id = startDay(date).getTime();
+  const progresses = listeners[id];
 
   if (entries) entries.getValues();
   if (progresses == null) return;
