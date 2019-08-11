@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import styled from "styled-components";
 
 import { printWithZero } from "../../util/time";
-import { getByKey, deleteByKey } from "../../util/db";
+import { intake } from "../../db";
 import { dispatchListeners } from "../../util/progressEvent";
 import DeleteButton, { StyledButton } from "./DeleteButton";
 
@@ -55,13 +55,13 @@ export default class Entry extends Component<Props, State> {
     this.updateValue();
   }
   public async updateValue(): Promise<void> {
-    const value = await getByKey(this.props.$id);
+    const value = await intake.get(this.props.$id);
     this.setState({ value });
   }
   private async deleteEntry(): Promise<void> {
     const time = this.props.$id;
     if (new Date().getTime() - time > timeLimit) return;
-    await deleteByKey(time);
+    await intake.remove(time);
     dispatchListeners(new Date(time));
   }
   public render(): JSX.Element {

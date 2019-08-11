@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { Swiper } from "swiper/dist/js/swiper.esm.js";
 
-import { addToDB } from "../util/db";
+import { add } from "../db/intake";
 import { dispatchListeners } from "../util/progressEvent";
 import { subtractTime } from "../util/time";
 
@@ -161,7 +161,7 @@ export default class Input extends Component {
       new Date(),
       timeValues[this.timeSwiper.activeIndex].value * 60000
     );
-    await addToDB(mlValue, timeValue);
+    await add(mlValue, timeValue);
     dispatchListeners(timeValue);
   }
 }

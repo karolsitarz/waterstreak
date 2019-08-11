@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import Progress from "./Progress";
 import { ObjectDate } from "../../util/time";
-import { getValuesDay } from "../../util/db";
+import { intake } from "../../db";
 import {
   addProgressListener,
   removeProgressListener
@@ -40,13 +40,15 @@ export default class LinkedProgress extends Component<Props, State> {
     removeProgressListener(this, this.props.date);
   }
   public async updateValue(): Promise<void> {
-    const values = await getValuesDay(this.props.date);
+    const values = await intake.getValuesDay(this.props.date);
+    // if is an empty array, return
     if (
       Array.isArray(values) &&
       values.length === 0 &&
       this.state.progress === 0
     )
       return;
+
     const progress = values.reduce((r, c) => (r += c), 0);
     this.setState({ progress });
   }

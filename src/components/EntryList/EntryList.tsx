@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 
-import { getAllKeys } from "../../util/db";
+import { intake } from "../../db";
 import Entry from "./Entry";
 import EntryGroup from "./EntryGroup";
 import { addEntryListener } from "../../util/progressEvent";
@@ -31,7 +31,7 @@ export default class EntryList extends Component {
     addEntryListener(this);
   }
   public async getValues(): Promise<void> {
-    let keys: number[] = await getAllKeys();
+    let keys: number[] = await intake.getAll();
     if (keys == null || keys.length === 0) {
       if (this.state.entries.length === 0) return;
       else {
