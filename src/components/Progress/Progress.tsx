@@ -73,8 +73,10 @@ export default class ProgressRing extends Component<Props, State> {
       };
   }
   public componentDidUpdate(): void {
-    if (this.state.previousProgress - this.state.progress !== 0)
+    if (this.state.previousProgress - this.state.progress !== 0) {
       this.animate(this.state.previousProgress, this.state.progress);
+      this.setState({ previousProgress: this.state.progress });
+    }
   }
 
   public componentDidMount(): void {

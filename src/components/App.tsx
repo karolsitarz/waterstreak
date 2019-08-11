@@ -32,7 +32,7 @@ const Main = styled.div<{ enabled: boolean }>`
 
 export default class Hello extends React.Component<{}, State> {
   public state: State = {
-    goalInput: false
+    goalInput: localStorage.init !== "true"
   };
   public render(): JSX.Element {
     return (

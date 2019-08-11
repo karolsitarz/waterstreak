@@ -6,14 +6,20 @@ import {
   Button,
   Space,
   H3,
-  ScrollContainer,
   ScrollElement,
   SlidersContainer
 } from "../Components";
 
+import { goal } from "../../db";
+import { dispatchGoalListeners } from "../../util/progressEvent";
+
 interface Props {
   enabled: boolean;
   onClick?: () => void;
+}
+
+interface State {
+  value: number;
 }
 
 let values: number[] = [];
@@ -45,9 +51,12 @@ const Container = styled.section<Props>`
     `}
 `;
 
-export default class GoalInput extends React.Component<Props> {
+export default class GoalInput extends React.Component<Props, State> {
   private scrollEl: HTMLDivElement;
   private mlSwiper: Swiper;
+  public state: State = {
+    value: undefined
+  };
 
   public componentDidMount(): void {
     this.mlSwiper = new Swiper(this.scrollEl, {
@@ -56,10 +65,25 @@ export default class GoalInput extends React.Component<Props> {
       centeredSlides: true,
       initialSlide: 6
     });
+    this.getGoal();
   }
 
-  private confirmGoal(): void {
+  private async getGoal(): Promise<void> {
+    const value = await goal.get();
+    this.setState({ value });
+    if (value != null) {
+      const i = values.indexOf(value);
+      if (i !== -1) this.mlSwiper.slideTo(i, 0);
+    }
+  }
+
+  private async confirmGoal(): Promise<void> {
+    const value = values[this.mlSwiper.activeIndex];
+    await goal.add(value);
+    dispatchGoalListeners(new Date());
+    this.setState({ value });
     this.props.onClick();
+    if (localStorage.init !== "true") localStorage.init = "true";
   }
 
   private cancelGoal(): void {
@@ -82,10 +106,18 @@ export default class GoalInput extends React.Component<Props> {
           </div>
         </SlidersContainer>
         <Space size={1.5} />
-        <Button primary onClick={() => this.confirmGoal()}>
-          OK
-        </Button>
-        <Button onClick={() => this.cancelGoal()}>Cancel</Button>
+        {this.state.value === undefined ? (
+          ""
+        ) : (
+          <Button primary onClick={() => this.confirmGoal()}>
+            OK
+          </Button>
+        )}
+        {this.state.value == null ? (
+          ""
+        ) : (
+          <Button onClick={() => this.cancelGoal()}>Cancel</Button>
+        )}
       </Container>
     );
   }

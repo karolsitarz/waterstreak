@@ -33,7 +33,7 @@ const MainContent = (props: State): JSX.Element => {
     <></>
   ) : (
     <>
-      {progress > goal && goal > 0 ? (
+      {progress >= goal && goal > 0 ? (
         <H4>Goal reached!</H4>
       ) : (
         <>
