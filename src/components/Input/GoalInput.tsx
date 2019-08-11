@@ -41,7 +41,7 @@ const Container = styled.section<Props>`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  transform: translate3d(0, 1em, 0);
+  transform: translate3d(0, -1em, 0);
   ${props =>
     props.enabled &&
     css`
