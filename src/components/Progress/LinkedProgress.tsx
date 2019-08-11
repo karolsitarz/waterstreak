@@ -29,7 +29,7 @@ const H4 = styled.h4`
 
 const MainContent = (props: State): JSX.Element => {
   const { progress, goal } = props;
-  return !progress || !goal ? (
+  return progress == null || !goal ? (
     <></>
   ) : (
     <>
@@ -81,8 +81,7 @@ export default class LinkedProgress extends Component<Props, State> {
   }
   public render(): JSX.Element {
     const { progress, goal } = this.state;
-    const set = !goal || !progress;
-    const val = set ? 0 : progress / goal;
+    const val = !goal || progress == null ? 0 : progress / goal;
 
     return (
       <Progress progress={val}>
