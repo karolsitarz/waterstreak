@@ -53,6 +53,9 @@ const Canvas = styled.canvas`
   object-fit: contain;
 `;
 
+const getInBound = (value: number): number =>
+  value > 1 ? 1 : value < 0 ? 0 : value;
+
 export default class ProgressRing extends Component<Props, State> {
   private canvas: HTMLCanvasElement;
   private gradient: CanvasGradient;
@@ -102,8 +105,8 @@ export default class ProgressRing extends Component<Props, State> {
   }
 
   private animate(start: number, end: number): void {
-    start = start < 0 ? 0 : start;
-    end = end > 1 ? 1 : end;
+    start = getInBound(start);
+    end = getInBound(end);
     const chunkTime = Math.abs(time * (end - start));
     let t = 0;
     const loop = (): void => {
