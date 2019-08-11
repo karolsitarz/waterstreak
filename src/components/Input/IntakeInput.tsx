@@ -2,9 +2,15 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { Swiper } from "swiper/dist/js/swiper.esm.js";
 
-import { add } from "../db/intake";
-import { dispatchIntakeListeners } from "../util/progressEvent";
-import { subtractTime } from "../util/time";
+import { add } from "../../db/intake";
+import { dispatchIntakeListeners } from "../../util/progressEvent";
+import { subtractTime } from "../../util/time";
+import {
+  Button as DrinkButton,
+  ScrollContainer,
+  ScrollElement,
+  SlidersContainer
+} from "../Components";
 
 interface SwiperValues {
   desc: string;
@@ -39,66 +45,6 @@ const InputContainer = styled.div`
   align-items: center;
   flex-direction: column;
   font-weight: bold;
-`;
-
-const SlidersContainer = styled.div`
-  background-color: var(--light);
-  border-radius: 0.75em;
-  height: 3em;
-  margin-bottom: 0.5em;
-  min-width: 8em;
-  max-width: 100%;
-  overflow-y: hidden;
-  display: flex;
-  &::before,
-  &::after {
-    content: "";
-    position: absolute;
-    width: 100%;
-    left: 0;
-    right: 0;
-    height: 1.25em;
-    pointer-events: none;
-    z-index: 2;
-  }
-  &::before {
-    top: 0;
-    background-image: linear-gradient(
-      to bottom,
-      var(--light),
-      var(--lighttransparent)
-    );
-  }
-  &::after {
-    bottom: 0;
-    background-image: linear-gradient(
-      to top,
-      var(--light),
-      var(--lighttransparent)
-    );
-  }
-`;
-
-const DrinkButton = styled.div`
-  background-color: var(--accent);
-  background-image: var(--gradient);
-  border-radius: 0.75em;
-  padding: 0.5em 2em;
-  color: #fff;
-  box-shadow: 0 0.5em 1em 0 rgba(0, 0, 0, 0.2);
-`;
-
-const ScrollElement = styled.div`
-  height: 100%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  white-space: nowrap;
-`;
-
-const ScrollContainer = styled.div`
-  flex-grow: 1;
 `;
 
 export default class Input extends Component {
@@ -149,7 +95,7 @@ export default class Input extends Component {
             </div>
           </ScrollContainer>
         </SlidersContainer>
-        <DrinkButton onClick={() => this.handleButtonClick()}>
+        <DrinkButton primary onClick={() => this.handleButtonClick()}>
           drink
         </DrinkButton>
       </InputContainer>

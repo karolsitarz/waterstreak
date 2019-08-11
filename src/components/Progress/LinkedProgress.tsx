@@ -47,7 +47,7 @@ const MainContent = (props: State): JSX.Element => {
 };
 
 export default class LinkedProgress extends Component<Props, State> {
-  public state: Readonly<State> = {
+  public state: State = {
     progress: undefined,
     goal: undefined
   };

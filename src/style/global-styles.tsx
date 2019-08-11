@@ -52,6 +52,7 @@ export default createGlobalStyle`
     text-align: center;
     max-width: 960px;
     animation: appFadeIn .5s ease backwards;
+    overflow: hidden;
   }
   svg {
     width: 100%;

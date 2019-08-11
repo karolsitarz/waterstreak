@@ -1,12 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 
-import Input from "./Input";
+import Input from "./Input/IntakeInput";
 import Progress from "./Progress/LinkedProgress";
 import { today } from "../util/time";
 import Calendar from "./Calendar";
 import EntryList from "./EntryList";
 import WeekLookup from "./Calendar/WeekLookup";
+import GoalInput from "./Input/GoalInput";
+import { Space, H3 } from "./Components";
 
 const Section = styled.div<{ align: string; main?: boolean }>`
   min-height: ${props => (props.main ? "100vh" : "")};
@@ -18,33 +20,47 @@ const Section = styled.div<{ align: string; main?: boolean }>`
   align-items: center;
 `;
 
-const Space = styled.div<{ size: number }>`
-  width: ${props => props.size}em;
-  height: ${props => props.size}em;
+interface State {
+  goalInput: boolean;
+}
+
+const Main = styled.div<{ enabled: boolean }>`
+  overflow: auto;
+  height: 100vh;
+  pointer-events: ${props => (props.enabled ? "" : "none")};
 `;
 
-export default class Hello extends React.Component<{}> {
+export default class Hello extends React.Component<{}, State> {
+  public state: State = {
+    goalInput: false
+  };
   public render(): JSX.Element {
     return (
       <>
-        <Section align="center" main={true}>
-          <div>
-            <h1>Hello, there!</h1>
-            <h3 style={{ color: "var(--secondary)" }}>
-              You&apos;re doing great!
-            </h3>
-          </div>
-          <Space size={1.5} />
-          <Progress main={true} date={today()} />
-          <Space size={2.5} />
-          <Input />
-          <Space size={1.5} />
-          <WeekLookup />
-        </Section>
-        <Section align="flex-start">
-          <Calendar />
-          <EntryList />
-        </Section>
+        <GoalInput
+          enabled={this.state.goalInput}
+          onClick={() => this.setState({ goalInput: false })}
+        />
+        <Main enabled={!this.state.goalInput}>
+          <Section align="center" main={true}>
+            <div>
+              <h1>Hello, there!</h1>
+              <H3>You&apos;re doing great!</H3>
+            </div>
+            <Space size={1.5} />
+            <div onClick={() => this.setState({ goalInput: true })}>
+              <Progress main={true} date={today()} />
+            </div>
+            <Space size={2.5} />
+            <Input />
+            <Space size={1.5} />
+            <WeekLookup />
+          </Section>
+          <Section align="flex-start">
+            <Calendar />
+            <EntryList />
+          </Section>
+        </Main>
       </>
     );
   }
