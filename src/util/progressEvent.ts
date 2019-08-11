@@ -40,7 +40,15 @@ export const dispatchIntakeListeners = (date: Date): void => {
   const id = startDay(date).getTime();
   const progresses = listeners[id];
 
-  if (entries) entries.getValues();
+  if (entries) entries.getValues(); // TODO: optimize getting values
   if (progresses == null) return;
   for (let element of progresses) element.updateIntake();
+};
+
+export const dispatchGoalListeners = (date: Date): void => {
+  const id = startDay(date).getTime();
+  const progresses = listeners[id];
+
+  if (progresses == null) return;
+  for (let element of progresses) element.updateGoal();
 };
