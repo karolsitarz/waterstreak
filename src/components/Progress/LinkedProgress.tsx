@@ -3,13 +3,11 @@ import styled from "styled-components";
 
 import Progress from "./Progress";
 import { ObjectDate } from "../../util/time";
-import { intake } from "../../db";
+import { intake, goal } from "../../db";
 import {
   addProgressListener,
   removeProgressListener
 } from "../../util/progressEvent";
-
-const GOAL = 2000;
 
 interface Props {
   date: ObjectDate;
@@ -19,6 +17,7 @@ interface Props {
 
 interface State {
   progress: number;
+  goal: number;
 }
 
 const H1 = styled.h1`
@@ -28,18 +27,39 @@ const H4 = styled.h4`
   line-height: 1em;
 `;
 
+const MainContent = (props: State): JSX.Element => {
+  const { progress, goal } = props;
+  return !progress || !goal ? (
+    <></>
+  ) : (
+    <>
+      {progress > goal && goal > 0 ? (
+        <H4>Goal reached!</H4>
+      ) : (
+        <>
+          <H1>{goal - progress}</H1>
+          <H4>ml to go</H4>
+        </>
+      )}
+      <h6>out of {goal}</h6>
+    </>
+  );
+};
+
 export default class LinkedProgress extends Component<Props, State> {
   public state: Readonly<State> = {
-    progress: 0
+    progress: undefined,
+    goal: undefined
   };
   public componentDidMount(): void {
     addProgressListener(this, this.props.date);
-    this.updateValue();
+    this.updateGoal();
+    this.updateIntake();
   }
   public componentWillUnmount(): void {
     removeProgressListener(this, this.props.date);
   }
-  public async updateValue(): Promise<void> {
+  public async updateIntake(): Promise<void> {
     const values = await intake.getValuesDay(this.props.date);
     // if is an empty array, return
     if (
@@ -52,22 +72,25 @@ export default class LinkedProgress extends Component<Props, State> {
     const progress = values.reduce((r, c) => (r += c), 0);
     this.setState({ progress });
   }
+  public async updateGoal(): Promise<void> {
+    const fetchedGoal = await goal.get(this.props.date);
+    // if is an empty array, return
+    if (!fetchedGoal) return;
+
+    this.setState({ goal: fetchedGoal });
+  }
   public render(): JSX.Element {
-    return this.props.main ? (
-      <Progress progress={this.state.progress / GOAL}>
-        {this.state.progress > GOAL ? (
-          <H4>Goal reached!</H4>
+    const { progress, goal } = this.state;
+    const set = !goal || !progress;
+    const val = set ? 0 : progress / goal;
+
+    return (
+      <Progress progress={val}>
+        {this.props.main ? (
+          <MainContent progress={progress} goal={goal} />
         ) : (
-          <>
-            <H1>{GOAL - this.state.progress}</H1>
-            <H4>ml to go</H4>
-          </>
+          this.props.children
         )}
-        <h6>out of {GOAL}</h6>
-      </Progress>
-    ) : (
-      <Progress progress={this.state.progress / GOAL}>
-        {this.props.children}
       </Progress>
     );
   }

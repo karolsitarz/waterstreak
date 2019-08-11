@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { printWithZero } from "../../util/time";
 import { intake } from "../../db";
-import { dispatchListeners } from "../../util/progressEvent";
+import { dispatchIntakeListeners } from "../../util/progressEvent";
 import DeleteButton, { StyledButton } from "./DeleteButton";
 
 const timeLimit = 9 * 3600000;
@@ -62,7 +62,7 @@ export default class Entry extends Component<Props, State> {
     const time = this.props.$id;
     if (new Date().getTime() - time > timeLimit) return;
     await intake.remove(time);
-    dispatchListeners(new Date(time));
+    dispatchIntakeListeners(new Date(time));
   }
   public render(): JSX.Element {
     const time = this.props.$id;

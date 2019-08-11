@@ -17,5 +17,6 @@ export const get = async (date: ObjectDate = today()): Promise<number> => {
   const bound = objectToDate(date).getTime();
   const records = await db.getAll(GOAL_TABLE_NAME, IDBKeyRange.bound(0, bound));
 
+  if (Array.isArray(records) && records.length === 0) return null;
   return Math.max(...records);
 };
