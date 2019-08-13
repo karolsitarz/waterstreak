@@ -44,3 +44,18 @@ export const getValuesDay = async (
   const tempDate = objectToDate(date);
   return getValuesBetween(startDay(tempDate), endDay(tempDate));
 };
+
+const getKeysBetween = async (start: Date, end: Date): Promise<number[]> => {
+  const db = await open();
+  return await db.getAllKeys(
+    INTAKE_TABLE_NAME,
+    IDBKeyRange.bound(start.getTime(), end.getTime())
+  );
+};
+
+export const getKeysDay = async (
+  date: ObjectDate = today()
+): Promise<number[]> => {
+  const tempDate = objectToDate(date);
+  return getKeysBetween(startDay(tempDate), endDay(tempDate));
+};

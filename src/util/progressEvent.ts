@@ -40,7 +40,7 @@ export const dispatchIntakeListeners = (date: Date): void => {
   const id = startDay(date).getTime();
   const progresses = listeners[id];
 
-  if (entries) entries.getValues(); // TODO: optimize getting values
+  if (entries) entries.updateEntry(date);
   if (progresses == null) return;
   for (let element of progresses) element.updateIntake();
 };
