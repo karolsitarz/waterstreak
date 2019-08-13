@@ -15,8 +15,12 @@ export const add = async (volume: number): Promise<void> => {
 export const get = async (date: ObjectDate = today()): Promise<number> => {
   const db = await open();
   const bound = objectToDate(date).getTime();
-  const records = await db.getAll(GOAL_TABLE_NAME, IDBKeyRange.bound(0, bound));
+  const records = await db.getAllKeys(
+    GOAL_TABLE_NAME,
+    IDBKeyRange.bound(0, bound)
+  );
 
   if (Array.isArray(records) && records.length === 0) return null;
-  return Math.max(...records);
+  const latest = Math.max(...records);
+  return await db.get(GOAL_TABLE_NAME, latest);
 };
