@@ -1,44 +1,51 @@
 import { ObjectDate, startDay, objectToDate } from "./time";
 import LinkedProgress from "../components/Progress/LinkedProgress";
 import EntryList from "../components/EntryList";
+import EntryGroup from "../components/EntryList/EntryGroup";
 
-interface Listener {
-  [key: number]: LinkedProgress[];
-}
-const listeners: Listener = {};
+const intakeListeners: { [key: number]: LinkedProgress[] } = {};
+const entryListeners: { [key: number]: EntryGroup } = {};
 let entries: EntryList;
 
-export const addProgressListener = (
+export const addIntakeListener = (
   element: LinkedProgress,
   date: ObjectDate
 ): void => {
   const id = startDay(objectToDate(date)).getTime();
 
-  const listener = listeners[id];
-  if (listener == null) listeners[id] = [element];
+  const listener = intakeListeners[id];
+  if (listener == null) intakeListeners[id] = [element];
   else listener.push(element);
 };
 
-export const removeProgressListener = (
+export const removeIntakeListener = (
   element: LinkedProgress,
   date: ObjectDate
 ): void => {
   const id = startDay(objectToDate(date)).getTime();
 
-  if (!(id in listeners)) return;
-  if (listeners[id] == null) return;
-  const i = listeners[id].indexOf(element);
+  if (!(id in intakeListeners)) return;
+  if (intakeListeners[id] == null) return;
+  const i = intakeListeners[id].indexOf(element);
   if (i < 0) return;
-  listeners[id].splice(i, 1);
+  intakeListeners[id].splice(i, 1);
 };
 
-export const addEntryListener = (element: EntryList): void => {
+export const addEntryListListener = (element: EntryList): void => {
   entries = element;
+};
+
+export const addEntryGroupListener = (
+  element: EntryGroup,
+  date: ObjectDate
+): void => {
+  const id = objectToDate(date).getTime();
+  entryListeners[id] = element;
 };
 
 export const dispatchIntakeListeners = (date: Date): void => {
   const id = startDay(date).getTime();
-  const progresses = listeners[id];
+  const progresses = intakeListeners[id];
 
   if (entries) entries.updateEntry(date);
   if (progresses == null) return;
@@ -47,7 +54,9 @@ export const dispatchIntakeListeners = (date: Date): void => {
 
 export const dispatchGoalListeners = (date: Date): void => {
   const id = startDay(date).getTime();
-  const progresses = listeners[id];
+  const progresses = intakeListeners[id];
+
+  if (entryListeners[id]) entryListeners[id].update();
 
   if (progresses == null) return;
   for (let element of progresses) element.updateGoal();

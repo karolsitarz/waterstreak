@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { intake } from "../../db";
 import Entry from "./Entry";
 import EntryGroup from "./EntryGroup";
-import { addEntryListener } from "../../util/progressEvent";
+import { addEntryListListener } from "../../util/progressEvent";
 import { InView } from "react-intersection-observer";
 import { dateToObject } from "../../util/time";
 
@@ -34,7 +34,7 @@ export default class EntryList extends Component {
     // initial entries
     this.getFirstEntries();
     // add listener for live updating
-    addEntryListener(this);
+    addEntryListListener(this);
   }
   public async getFirstEntries(): Promise<void> {
     let keys: number[] = await intake.getAll();
