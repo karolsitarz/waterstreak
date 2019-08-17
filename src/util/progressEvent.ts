@@ -1,14 +1,16 @@
 import { ObjectDate, startDay, objectToDate } from "./time";
-import LinkedProgress from "../components/Progress/LinkedProgress";
 import EntryList from "../components/EntryList";
-import EntryGroup from "../components/EntryList/EntryGroup";
 
-const intakeListeners: { [key: number]: LinkedProgress[] } = {};
-const entryListeners: { [key: number]: EntryGroup } = {};
+const intakeListeners: { [key: number]: ProgressObserver[] } = {};
 let entries: EntryList;
 
-export const addIntakeListener = (
-  element: LinkedProgress,
+export interface ProgressObserver {
+  updateGoal(): Promise<void>;
+  updateIntake(): Promise<void>;
+}
+
+export const addListener = (
+  element: ProgressObserver,
   date: ObjectDate
 ): void => {
   const id = startDay(objectToDate(date)).getTime();
@@ -18,8 +20,8 @@ export const addIntakeListener = (
   else listener.push(element);
 };
 
-export const removeIntakeListener = (
-  element: LinkedProgress,
+export const removeListener = (
+  element: ProgressObserver,
   date: ObjectDate
 ): void => {
   const id = startDay(objectToDate(date)).getTime();
@@ -35,14 +37,6 @@ export const addEntryListListener = (element: EntryList): void => {
   entries = element;
 };
 
-export const addEntryGroupListener = (
-  element: EntryGroup,
-  date: ObjectDate
-): void => {
-  const id = objectToDate(date).getTime();
-  entryListeners[id] = element;
-};
-
 export const dispatchIntakeListeners = (date: Date): void => {
   const id = startDay(date).getTime();
   const progresses = intakeListeners[id];
@@ -55,8 +49,6 @@ export const dispatchIntakeListeners = (date: Date): void => {
 export const dispatchGoalListeners = (date: Date): void => {
   const id = startDay(date).getTime();
   const progresses = intakeListeners[id];
-
-  if (entryListeners[id]) entryListeners[id].update();
 
   if (progresses == null) return;
   for (let element of progresses) element.updateGoal();

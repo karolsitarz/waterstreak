@@ -79,6 +79,12 @@ export default class EntryList extends Component {
       return;
     }
 
+    // if there isn't such entry
+    if (entries.values[i] == null) {
+      entries.days.unshift(i);
+      entries.days.sort().reverse();
+    }
+
     fetched = fetched.sort().reverse();
     entries.values[i] = [...fetched];
     this.setState({ entries });

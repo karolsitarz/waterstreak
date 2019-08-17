@@ -5,8 +5,9 @@ import Progress from "./Progress";
 import { ObjectDate } from "../../util/time";
 import { intake, goal } from "../../db";
 import {
-  addIntakeListener,
-  removeIntakeListener
+  addListener,
+  removeListener,
+  ProgressObserver
 } from "../../util/progressEvent";
 
 interface Props {
@@ -46,18 +47,19 @@ const MainContent = (props: State): JSX.Element => {
   );
 };
 
-export default class LinkedProgress extends Component<Props, State> {
+export default class LinkedProgress extends Component<Props, State>
+  implements ProgressObserver {
   public state: State = {
     progress: undefined,
     goal: undefined
   };
   public componentDidMount(): void {
-    addIntakeListener(this, this.props.date);
+    addListener(this, this.props.date);
     this.updateGoal();
     this.updateIntake();
   }
   public componentWillUnmount(): void {
-    removeIntakeListener(this, this.props.date);
+    removeListener(this, this.props.date);
   }
   public async updateIntake(): Promise<void> {
     const values = await intake.getValuesDay(this.props.date);

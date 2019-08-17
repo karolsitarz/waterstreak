@@ -1,8 +1,12 @@
 import React, { Component } from "react";
 import styled, { keyframes } from "styled-components";
 import { printWithZero, dateToObject } from "../../util/time";
-import { goal } from "../../db";
-import { addEntryGroupListener } from "../../util/progressEvent";
+import { goal, intake } from "../../db";
+import {
+  addListener,
+  removeListener,
+  ProgressObserver
+} from "../../util/progressEvent";
 
 interface Props {
   $id: number;
@@ -41,25 +45,50 @@ const StyledEntryGroup = styled.div`
 `;
 
 interface State {
+  progress: number;
   goal: number;
 }
 
-export default class EntryGroup extends Component<Props, State> {
+export default class EntryGroup extends Component<Props, State>
+  implements ProgressObserver {
   public state: State = {
+    progress: undefined,
     goal: undefined
   };
   public componentDidMount(): void {
-    this.update();
     const date = dateToObject(new Date(this.props.$id));
-    addEntryGroupListener(this, date);
+    addListener(this, date);
+    this.updateIntake();
+    this.updateGoal();
   }
-  public async update(): Promise<void> {
+  public componentWillUnmount(): void {
+    const date = dateToObject(new Date(this.props.$id));
+    removeListener(this, date);
+  }
+  public async updateIntake(): Promise<void> {
+    const date = new Date(this.props.$id);
+    const values = await intake.getValuesDay(dateToObject(date));
+    // if is an empty array, return
+    if (
+      Array.isArray(values) &&
+      values.length === 0 &&
+      this.state.progress === 0
+    )
+      return;
+
+    const progress = values.reduce((r, c) => (r += c), 0);
+    this.setState({ progress });
+  }
+  public async updateGoal(): Promise<void> {
     const date = new Date(this.props.$id);
     const fetchedGoal = await goal.get(dateToObject(date));
     this.setState({ goal: fetchedGoal });
   }
   public render(): JSX.Element {
     const date = new Date(this.props.$id);
+    const { progress, goal } = this.state;
+    const string = !goal || progress == null ? "" : `${progress}/${goal}ml`;
+
     return (
       <StyledEntryGroup>
         <Label>
@@ -67,7 +96,7 @@ export default class EntryGroup extends Component<Props, State> {
             {date.getFullYear()}-{printWithZero(date.getMonth() + 1)}-
             {printWithZero(date.getDate())}
           </span>
-          <span>{this.state.goal ? `${this.state.goal}ml` : ""}</span>
+          <span>{string}</span>
         </Label>
         {this.props.children}
       </StyledEntryGroup>
