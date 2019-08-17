@@ -77,3 +77,10 @@ export const ScrollElement = styled.div`
 export const ScrollContainer = styled.div`
   flex-grow: 1;
 `;
+
+export const Accent = styled.span`
+  background-image: var(--gradient);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+`;

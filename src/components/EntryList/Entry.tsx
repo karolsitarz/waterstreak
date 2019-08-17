@@ -5,6 +5,7 @@ import { printWithZero } from "../../util/time";
 import { intake } from "../../db";
 import { dispatchIntakeListeners } from "../../util/progressEvent";
 import DeleteButton, { StyledButton } from "./DeleteButton";
+import { Accent } from "../Components";
 
 const timeLimit = 9 * 3600000;
 
@@ -15,13 +16,6 @@ interface Props {
 interface State {
   value: number;
 }
-
-const Volume = styled.span`
-  background-image: var(--gradient);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-`;
 
 const Time = styled.span`
   color: var(--secondary);
@@ -77,7 +71,7 @@ export default class Entry extends Component<Props, State> {
           {printWithZero(dateTime.getMinutes())}
         </Time>
         <RightSide>
-          <Volume>{this.state.value}</Volume>ml
+          <Accent>{this.state.value}</Accent>ml
         </RightSide>
       </StyledEntry>
     );

@@ -7,6 +7,7 @@ import {
   removeListener,
   ProgressObserver
 } from "../../util/progressEvent";
+import { Accent } from "../Components";
 
 interface Props {
   $id: number;
@@ -24,10 +25,35 @@ const Label = styled.div`
   border-radius: 0.5em;
   box-shadow: 0 0.75em 1em #0001;
   font-size: 0.85em;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  > span {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &:nth-child(1) {
+      transform: translate3d(0, 0, 0);
+      opacity: 1;
+    }
+    &:nth-child(2) {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      height: 100%;
+      width: 100%;
+      transform: translate3d(-50%, calc(-50% + 1em), 0);
+      opacity: 0;
+    }
+  }
+  &:hover {
+    > span:nth-child(1) {
+      transform: translate3d(0, -1em, 0);
+      opacity: 0;
+    }
+    > span:nth-child(2) {
+      transform: translate3d(-50%, -50%, 0);
+      opacity: 1;
+    }
+  }
 `;
 
 const fadeIn = keyframes`
@@ -87,7 +113,11 @@ export default class EntryGroup extends Component<Props, State>
   public render(): JSX.Element {
     const date = new Date(this.props.$id);
     const { progress, goal } = this.state;
-    const string = !goal || progress == null ? "" : `${progress}/${goal}ml`;
+    const string = !goal || progress == null ? "" : `${progress}/${goal} ml`;
+    const percentage =
+      !goal || progress == null
+        ? ""
+        : `${((progress * 100) / goal).toFixed(0)}%`;
 
     return (
       <StyledEntryGroup>
@@ -96,7 +126,9 @@ export default class EntryGroup extends Component<Props, State>
             {date.getFullYear()}-{printWithZero(date.getMonth() + 1)}-
             {printWithZero(date.getDate())}
           </span>
-          <span>{string}</span>
+          <span>
+            <Accent>{percentage}</Accent>&ensp;-&ensp;{string}
+          </span>
         </Label>
         {this.props.children}
       </StyledEntryGroup>
