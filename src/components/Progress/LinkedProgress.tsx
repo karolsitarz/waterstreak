@@ -49,16 +49,19 @@ const MainContent = (props: State): JSX.Element => {
 
 export default class LinkedProgress extends Component<Props, State>
   implements ProgressObserver {
+  private _isMounted = false;
   public state: State = {
     progress: undefined,
     goal: undefined
   };
   public componentDidMount(): void {
+    this._isMounted = true;
     addListener(this, this.props.date);
     this.updateGoal();
     this.updateIntake();
   }
   public componentWillUnmount(): void {
+    this._isMounted = false;
     removeListener(this, this.props.date);
   }
   public async updateIntake(): Promise<void> {
@@ -72,14 +75,14 @@ export default class LinkedProgress extends Component<Props, State>
       return;
 
     const progress = values.reduce((r, c) => (r += c), 0);
-    this.setState({ progress });
+    if (this._isMounted) this.setState({ progress });
   }
   public async updateGoal(): Promise<void> {
     const fetchedGoal = await goal.get(this.props.date);
     // if is an empty array, return
     if (!fetchedGoal) return;
 
-    this.setState({ goal: fetchedGoal });
+    if (this._isMounted) this.setState({ goal: fetchedGoal });
   }
   public render(): JSX.Element {
     const { progress, goal } = this.state;

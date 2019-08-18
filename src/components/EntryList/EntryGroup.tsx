@@ -77,17 +77,20 @@ interface State {
 
 export default class EntryGroup extends Component<Props, State>
   implements ProgressObserver {
+  private _isMounted = false;
   public state: State = {
     progress: undefined,
     goal: undefined
   };
   public componentDidMount(): void {
+    this._isMounted = true;
     const date = dateToObject(new Date(this.props.$id));
     addListener(this, date);
     this.updateIntake();
     this.updateGoal();
   }
   public componentWillUnmount(): void {
+    this._isMounted = false;
     const date = dateToObject(new Date(this.props.$id));
     removeListener(this, date);
   }
@@ -103,12 +106,12 @@ export default class EntryGroup extends Component<Props, State>
       return;
 
     const progress = values.reduce((r, c) => (r += c), 0);
-    this.setState({ progress });
+    if (this._isMounted) this.setState({ progress });
   }
   public async updateGoal(): Promise<void> {
     const date = new Date(this.props.$id);
     const fetchedGoal = await goal.get(dateToObject(date));
-    this.setState({ goal: fetchedGoal });
+    if (this._isMounted) this.setState({ goal: fetchedGoal });
   }
   public render(): JSX.Element {
     const date = new Date(this.props.$id);
