@@ -73,9 +73,10 @@ const ThemeChange = styled.div<{ dark: boolean }>`
 export default class App extends React.Component<{}, State> {
   public state: State = {
     goalInput: localStorage.init !== "true",
-    dark: false
+    dark: localStorage.dark || false
   };
   private changeTheme(): void {
+    localStorage.dark = !this.state.dark;
     this.setState({ dark: !this.state.dark });
   }
   public render(): JSX.Element {
