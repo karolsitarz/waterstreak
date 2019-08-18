@@ -28,6 +28,19 @@ const dark: Theme = {
   progressFilter: "saturate(0.8) brightness(0.95)"
 };
 
+export const setTheme = (t: boolean): void => {
+  localStorage.dark = t;
+  const color = (t ? dark : light)["bg"];
+  const el = document.head.querySelector('meta[name="theme-color"]');
+
+  if (el) el.setAttribute("content", color);
+  else
+    document.head.insertAdjacentHTML(
+      "beforeend",
+      `<meta name="theme-color" content="${color}">`
+    );
+};
+
 export const getTheme = (t: boolean): Theme => (t ? dark : light);
 
 export default styled.div<{ dark: boolean }>`

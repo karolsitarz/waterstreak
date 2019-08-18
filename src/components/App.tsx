@@ -9,7 +9,7 @@ import EntryList from "./EntryList";
 import WeekLookup from "./Calendar/WeekLookup";
 import GoalInput from "./Input/GoalInput";
 import { Space, H3 } from "./Components";
-import Themed from "../style/Themed";
+import Themed, { setTheme } from "../style/Themed";
 
 const Section = styled.div<{ align: string; main?: boolean }>`
   min-height: ${props => (props.main ? "100vh" : "")};
@@ -73,11 +73,14 @@ const ThemeChange = styled.div<{ dark: boolean }>`
 export default class App extends React.Component<{}, State> {
   public state: State = {
     goalInput: localStorage.init !== "true",
-    dark: localStorage.dark || false
+    dark: localStorage.dark === "true" || false
   };
   private changeTheme(): void {
-    localStorage.dark = !this.state.dark;
+    setTheme(!this.state.dark);
     this.setState({ dark: !this.state.dark });
+  }
+  public componentDidMount(): void {
+    setTheme(this.state.dark);
   }
   public render(): JSX.Element {
     return (

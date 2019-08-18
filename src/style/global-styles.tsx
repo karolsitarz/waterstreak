@@ -28,7 +28,7 @@ export default createGlobalStyle`
     width: 100%;
     height: 100%;
     overscroll-behavior: contain;
-    background-color: ${getTheme(localStorage.dark || false).bg};
+    background-color: ${getTheme(localStorage.dark === "true" || false).bg};
   }
   h1, h2, h3, h4, h5, h6 {
     margin: 0;
