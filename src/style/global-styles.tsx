@@ -1,6 +1,8 @@
 import { createGlobalStyle } from "styled-components";
 import swiper from "./swiper-styles";
 
+import { getTheme } from "./Themed";
+
 export default createGlobalStyle`
   @import url('https://fonts.googleapis.com/css?family=Montserrat:500,700&display=swap&subset=latin-ext');
   
@@ -26,6 +28,7 @@ export default createGlobalStyle`
     width: 100%;
     height: 100%;
     overscroll-behavior: contain;
+    background-color: ${getTheme(localStorage.dark || false).bg};
   }
   h1, h2, h3, h4, h5, h6 {
     margin: 0;
