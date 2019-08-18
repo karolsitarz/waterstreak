@@ -26,8 +26,6 @@ export default createGlobalStyle`
     width: 100%;
     height: 100%;
     overscroll-behavior: contain;
-    color: var(--main);
-    background-color: var(--bg);
   }
   h1, h2, h3, h4, h5, h6 {
     margin: 0;
@@ -49,9 +47,6 @@ export default createGlobalStyle`
   #container {
     width: 100%;
     height: 100%;
-    margin: auto;
-    text-align: center;
-    max-width: 960px;
     animation: appFadeIn .5s ease backwards;
     overflow: hidden;
   }
@@ -75,17 +70,10 @@ export default createGlobalStyle`
     height: 0 !important;
   }
   :root {
-    --accent: #008ffc;
-    --main: #555555;
-    --secondary: #777777;
-    --light: #e5e5e5;
-    --lighttransparent: rgba(229, 229, 229, 0);
-    --bg: #ffffff;
-    --gradient: linear-gradient(to bottom right, #00cffc, #008ffc);
     font-size: 20px;
     letter-spacing: -.05em;
   }
-  @media screen and (max-height: 670px) {
+  @media screen and  (max-height: 670px) {
     :root {
       font-size: 2.85vh;
     }

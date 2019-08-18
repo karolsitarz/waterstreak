@@ -29,7 +29,7 @@ const RingContainer = styled.div<{ main?: boolean }>`
   background-image: radial-gradient(
     ellipse at center,
     transparent 60%,
-    rgba(0, 0, 0, 0.125) 60%
+    var(--light) 60%
   );
   border-radius: 50%;
 `;
@@ -51,6 +51,7 @@ const Canvas = styled.canvas`
   width: 100%;
   height: 100%;
   object-fit: contain;
+  filter: var(--progress-filter);
 `;
 
 const getInBound = (value: number): number =>

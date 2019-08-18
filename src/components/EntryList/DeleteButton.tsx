@@ -5,7 +5,7 @@ export const StyledButton = styled.div<{ sure: boolean }>`
   height: 2em;
   width: 2em;
   background-color: ${props =>
-    !props.sure ? "#e5e5e5" : "rgba(255, 0, 0, 0.4)"};
+    !props.sure ? "var(--light)" : "rgba(255, 0, 0, 0.4)"};
   display: block;
   position: absolute;
   right: -1em;
@@ -20,7 +20,7 @@ export const StyledButton = styled.div<{ sure: boolean }>`
 `;
 
 const Svg = styled.svg<{ sure: boolean }>`
-  fill: rgba(0, 0, 0, 0.5);
+  fill: var(--main);
   position: absolute;
   width: 50%;
   height: 50%;
