@@ -18,7 +18,7 @@ const Label = styled.div`
   position: sticky;
   top: 1em;
   padding: 0.5em 1em;
-  background: #e5e5e5;
+  background-color: var(--light);
   width: 100%;
   z-index: 1;
   margin-top: 2em;

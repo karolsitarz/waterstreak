@@ -26,7 +26,8 @@ export default createGlobalStyle`
     width: 100%;
     height: 100%;
     overscroll-behavior: contain;
-    color: #555;
+    color: var(--main);
+    background-color: var(--bg);
   }
   h1, h2, h3, h4, h5, h6 {
     margin: 0;
