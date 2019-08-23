@@ -28,7 +28,7 @@ for (let i = 500; i <= 5000; i += 250) values.push(i);
 
 const Container = styled.section<Props>`
   position: fixed;
-  z-index: 1000;
+  z-index: 10;
   top: 0;
   left: 0;
   width: 100vw;

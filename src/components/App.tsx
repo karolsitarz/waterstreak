@@ -40,7 +40,8 @@ const ThemeChange = styled.div<{ dark: boolean }>`
   position: absolute;
   top: 0.5em;
   right: 0.5em;
-  z-index: 1;
+  z-index: 100;
+  pointer-events: auto;
   background-color: var(--light);
   border-radius: 0.5em;
   overflow: hidden;
