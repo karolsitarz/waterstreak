@@ -21,7 +21,7 @@ const dark: Theme = {
   lightAccent: "#11b1d4",
   main: "#e7e7e7",
   secondary: "#dddddd",
-  light: "#202020",
+  light: "#242424",
   lightTransparent: "rgba(32, 32, 32, 0)",
   bg: "#2a2a2a",
   gradient: "linear-gradient(to bottom right, #11b1d4, #006bbd)",
