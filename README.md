@@ -9,7 +9,7 @@ A minimal hydration-tracking app. Simple, but has everything you would need.
 ![calendar and entry list](https://i.imgur.com/ROVUIu4.png)
 
 ## to-do list ✅
-  * change the hydration goal
+  * ~~adjustable hydration goal~~
+  * ~~dark mode~~
   * display the "streak" count
-  * dark mode?
   * notifications
